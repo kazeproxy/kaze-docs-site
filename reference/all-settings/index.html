@@ -1,0 +1,3282 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对接 Xboard / V2board / PPanel 的高性能代理节点后端">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kazecore.dev/reference/all-settings/">
+      
+      
+        <link rel="prev" href="../../performance/">
+      
+      
+        <link rel="next" href="../cli/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon-64.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>配置项速查表 - kaze core</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#配置项速查表" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="kaze core" class="md-header__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            kaze core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              配置项速查表
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quickstart/prepare/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../protocols/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  协议搭建
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../panel/xboard/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  面板对接
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/limits/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  功能配置
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  授权
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../performance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  性能对比
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  参考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kaze core" class="md-nav__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    kaze core
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/prepare/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    准备工作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一键安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker 部署
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker 部署
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装 Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署 kaze
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    手动安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    不接面板，直接搭节点
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级与卸载
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议搭建
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    协议搭建
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/vless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLESS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/vmess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VMess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/trojan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trojan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/shadowsocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shadowsocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/hysteria2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hysteria2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tuic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TUIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/anytls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnyTLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/naive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Naive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/mieru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mieru
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/snell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Snell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/socks-http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOCKS5 / HTTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板对接
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面板对接
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/xboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/xboard-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard 机器模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/multi-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一台机器多个面板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/v2board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/v2node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board（v2node 节点）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/ppanel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PPanel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/compat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板设置对照
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议与传输
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    路由与自定义出站（面板里配）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能配置
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    功能配置
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户限制与风控
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    审计与屏蔽
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分流与出口（节点文件）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS 解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/cert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TLS 证书
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/port-hopping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    端口跳跃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/realip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    真实 IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/multinode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一台机器多节点、多协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能调优
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    授权
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能对比
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    参考
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    参考
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项速查表
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项速查表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#对接必填" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对接（必填）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#监听与日志" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        监听与日志
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#同步间隔" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        同步间隔
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#超时" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        超时
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#用户限制" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用户限制
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#动态限速" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态限速
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#审计与屏蔽" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        审计与屏蔽
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#路由与出口" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        路由与出口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#端口跳跃" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        端口跳跃
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#证书" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        证书
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#中转与真实-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中转与真实 IP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#防爆破" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        防爆破
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#授权" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        授权
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#单节点独立设置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单节点独立设置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#多个面板" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多个面板
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    常见问题与排查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#对接必填" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        对接（必填）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#监听与日志" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        监听与日志
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#同步间隔" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        同步间隔
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#超时" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        超时
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#用户限制" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用户限制
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#动态限速" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态限速
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#审计与屏蔽" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        审计与屏蔽
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#路由与出口" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        路由与出口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#端口跳跃" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        端口跳跃
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#证书" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        证书
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#中转与真实-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中转与真实 IP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#防爆破" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        防爆破
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#授权" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        授权
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#单节点独立设置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单节点独立设置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#多个面板" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多个面板
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="配置项速查表">配置项速查表<a class="headerlink" href="#配置项速查表" title="Permanent link">&para;</a></h1>
+<p>所有设置都写在 <code>kaze.conf</code> 里，每行一个，格式是 <code>配置项=值</code>。面板下发的协议、端口、传输、用户等不在这里，由面板控制。</p>
+<p>说明里的「例」可以直接照抄，把值换成你自己的。没写进配置的项就用「默认」。</p>
+<p><strong>环境变量</strong>：每个设置也可以用环境变量传入（Docker 常用），两种写法都认：原名小写（<code>node_id</code>），或大写加 <code>KAZE_</code> 前缀（<code>KAZE_NODE_ID</code>）。环境变量优先于 <code>kaze.conf</code> 里的同名项。不带下划线的九个设置（<code>type</code> <code>listen</code> <code>port</code> <code>users</code> <code>cipher</code> <code>tls</code> <code>network</code> <code>path</code> <code>plugin</code>）同样可以用环境变量。</p>
+<p><strong>写法规则</strong>：</p>
+<ul>
+<li>值后面可以跟注释：<code>port=443 # 对外端口</code>（<code>#</code> 前要有空格；引号里的 <code>#</code> 不算注释，DoT 地址里的 <code>#名称</code> 也不受影响）。</li>
+<li>开关类的值写 <code>true</code> / <code>1</code> / <code>yes</code> / <code>on</code> 为开，<code>false</code> / <code>0</code> / <code>no</code> / <code>off</code> 或留空为关。</li>
+<li>数字不能是负数；<code>memory_limit</code> 的「不限制」写 <code>off</code>。</li>
+<li><code>log_file_dir=false</code> 等于留空（不写日志文件）。</li>
+<li>有的设置有别名，两种写法等价：<code>panel_url</code> = <code>webapi_url</code>，<code>panel_key</code> = <code>webapi_key</code>（<code>webapi_*</code> 是旧名，老配置不用改），<code>license</code> = <code>license_key</code>，<code>report_min_traffic</code> = <code>submit_traffic_min_traffic</code>，<code>device_min_traffic</code> = <code>submit_alive_ip_min_traffic</code>，<code>dns_provider</code> = <code>cert_dns_provider</code>，<code>dns_env</code> = <code>cert_dns_env</code>，<code>user_conn_limit</code> = <code>user_device_limit</code>。</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">kaze.conf（一键安装）</label><label for="__tabbed_1_2">环境变量（Docker）</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="na">type</span><span class="o">=</span><span class="s">xboard</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">node_id</span><span class="o">=</span><span class="s">1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">panel_url</span><span class="o">=</span><span class="s">https://panel.example.com</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="na">panel_key</span><span class="o">=</span><span class="s">你的通讯密钥</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="na">license_key</span><span class="o">=</span><span class="s">KZ-XXXX-XXXX-XXXX</span>
+</code></pre></div>
+<p>改完执行 <code>kaze restart</code> 生效；也可以用 <code>kaze config 配置项=值</code> 修改。</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xboard</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">node_id</span><span class="p">:</span><span class="w"> </span><span class="s">"1"</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">panel_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://panel.example.com</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">panel_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">你的通讯密钥</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">license_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KZ-XXXX-XXXX-XXXX</span>
+</code></pre></div>
+<p>改完执行 <code>docker compose up -d</code> 生效。</p>
+</div>
+</div>
+</div>
+<h2 id="对接必填">对接（必填）<a class="headerlink" href="#对接必填" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>xboard</td>
+<td>面板类型：<code>xboard</code>、<code>v2board</code>、<code>v2node</code>（wyx2685 的 v2node 节点）、<code>ppanel</code>；<code>local</code> = 不接面板，节点写在本文件里（见<a href="../../quickstart/local/">不接面板，直接搭节点</a>）<br>例：<code>type=xboard</code></td>
+</tr>
+<tr>
+<td><code>server_type</code></td>
+<td>—</td>
+<td>节点协议。Xboard、v2node 可不填；V2board、PPanel 必填。PPanel 可写多个：<code>server_type=vless,trojan,hysteria</code><br>例：<code>server_type=vless</code>。可选值：<code>trojan</code> <code>ss</code>（或 <code>shadowsocks</code>） <code>vless</code> <code>vmess</code> <code>hysteria</code> <code>tuic</code> <code>anytls</code> <code>mieru</code> <code>naive</code> <code>snell</code> <code>socks</code> <code>http</code>，见<a href="../../panel/v2board/">对接 V2board</a></td>
+</tr>
+<tr>
+<td><code>node_id</code></td>
+<td>—</td>
+<td>面板里的节点 ID（PPanel 是服务器 ID），多个用逗号分隔<br>例：<code>node_id=1</code> 或 <code>node_id=1,2,3</code></td>
+</tr>
+<tr>
+<td><code>panel_url</code></td>
+<td>—</td>
+<td>面板地址，带 <code>https://</code>（旧名 <code>webapi_url</code> 也认）<br>例：<code>panel_url=https://panel.example.com</code></td>
+</tr>
+<tr>
+<td><code>panel_key_file</code></td>
+<td>—</td>
+<td>从文件读通讯密钥（文件内容只有密钥），代替 <code>panel_key</code>，密钥就不会出现在配置文件、环境变量或 <code>docker-compose.yml</code> 里；相对路径按配置文件所在目录<br>例：<code>panel_key_file=/etc/kaze/panel.key</code></td>
+</tr>
+<tr>
+<td><code>panel_key</code></td>
+<td>—</td>
+<td>通讯密钥。Xboard 在后台「系统配置 → 节点配置 → 通讯密钥」，V2board 在「系统配置 → 节点 → 通讯密钥」（旧名 <code>webapi_key</code> 也认）<br>例：<code>panel_key=xxxxxxxxxxxx</code>；PPanel 在「系统设置 → 节点配置 → Secret Key」</td>
+</tr>
+<tr>
+<td><code>machine_id</code></td>
+<td>—</td>
+<td>Xboard 机器模式的机器 ID，填了就不需要 <code>node_id</code>，见<a href="../../panel/xboard-machine/">机器模式</a><br>例：<code>machine_id=3</code></td>
+</tr>
+<tr>
+<td><code>port</code> <code>users</code> <code>cipher</code> <code>server_key</code> <code>tls</code> <code>server_name</code> <code>network</code> <code>path</code> <code>service_name</code> <code>plugin</code> <code>plugin_opts</code> <code>obfs_password</code> <code>security</code> <code>reality_private_key</code> <code>reality_short_id</code> <code>reality_dest</code> <code>flow</code> <code>mieru_transport</code> <code>traffic_pattern</code> <code>user_hint_is_mandatory</code></td>
+<td>—</td>
+<td>仅 <code>type=local</code>（不接面板）时用，见<a href="../../quickstart/local/">不接面板，直接搭节点</a></td>
+</tr>
+<tr>
+<td><code>machine_token</code></td>
+<td>—</td>
+<td>机器令牌，在面板添加机器时给出<br>例：<code>machine_token=xxxxxxxx</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="监听与日志">监听与日志<a class="headerlink" href="#监听与日志" title="Permanent link">&para;</a></h2>
+<p>日志的用法见<a href="../../features/log/">日志</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>listen</code></td>
+<td>面板下发</td>
+<td>监听的 IP。<code>0.0.0.0</code> 同时监听 IPv4 和 IPv6;只想监听某个 IP 就写那个 IP<br>例：<code>listen=0.0.0.0</code></td>
+</tr>
+<tr>
+<td><code>log_level</code></td>
+<td>info</td>
+<td>日志级别：<code>debug</code>（排错用，很多）/ <code>info</code> / <code>warn</code> / <code>error</code>（只记错误）<br>例：<code>log_level=warn</code></td>
+</tr>
+<tr>
+<td><code>memory_limit</code></td>
+<td>0</td>
+<td>内存软上限，单位 MB。0 = 自动（机器内存或容器限制的 70%）；<code>off</code> = 不限制。<br>例：<code>memory_limit=512</code></td>
+</tr>
+<tr>
+<td><code>log_file_dir</code></td>
+<td>—</td>
+<td>把日志另存到这个目录。留空（或写 <code>false</code>）只输出到系统日志（<code>kaze log</code> 查看）<br>例：<code>log_file_dir=/var/log/kaze</code></td>
+</tr>
+<tr>
+<td><code>log_file_retention_days</code></td>
+<td>0</td>
+<td>日志文件保留天数，0 = 永久保留。开了日志文件建议设 7，免得磁盘被写满<br>例：<code>log_file_retention_days=7</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="同步间隔">同步间隔<a class="headerlink" href="#同步间隔" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_interval</code></td>
+<td>0</td>
+<td>从面板拉取配置和用户的间隔，单位秒。0 = 用面板设置的值，Xboard 面板默认 60 秒（Xboard：系统配置 → 节点配置 → 节点拉取动作轮询间隔；V2board：系统配置 → 节点 → 拉取间隔；PPanel：系统设置 → 节点配置）<br>例：<code>check_interval=60</code></td>
+</tr>
+<tr>
+<td><code>submit_interval</code></td>
+<td>0</td>
+<td>向面板上报流量的间隔，单位秒。0 = 用面板设置的值（面板里的「推送间隔」，位置同上）<br>例：<code>submit_interval=60</code></td>
+</tr>
+<tr>
+<td><code>submit_traffic_min_traffic</code></td>
+<td>0</td>
+<td>用户本次流量少于这么多 KB 就攒到下次一起上报，减少面板压力。0 = 用面板设置的值（Xboard / V2board 节点配置里的 <code>node_report_min_traffic</code>，PPanel 的流量上报阈值）。也可写 <code>report_min_traffic</code><br>例：<code>submit_traffic_min_traffic=10</code></td>
+</tr>
+<tr>
+<td><code>submit_alive_ip_min_traffic</code></td>
+<td>0</td>
+<td>用户本次流量少于这么多 KB 就不算在线（不占设备数）。0 = 用面板设置的值（Xboard / V2board 节点配置里的 <code>device_online_min_traffic</code>）。也可写 <code>device_min_traffic</code><br>例：<code>submit_alive_ip_min_traffic=10</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="超时">超时<a class="headerlink" href="#超时" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tcp_timeout</code></td>
+<td>5</td>
+<td>TCP 连接空闲多久断开，单位分钟<br>例：<code>tcp_timeout=10</code></td>
+</tr>
+<tr>
+<td><code>udp_timeout</code></td>
+<td>2</td>
+<td>UDP 会话空闲多久结束，单位分钟<br>例：<code>udp_timeout=3</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="用户限制">用户限制<a class="headerlink" href="#用户限制" title="Permanent link">&para;</a></h2>
+<p>面板套餐里设置的限速、设备数优先；这里的设置用于面板没设置的情况，或给所有用户加一个上限。详见<a href="../../features/limits/">用户限制与风控</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user_speed_limit</code></td>
+<td>0</td>
+<td>每个用户限速上限，单位 Mbps。面板值更低时用面板值。0 = 只用面板值<br>例：<code>user_speed_limit=100</code></td>
+</tr>
+<tr>
+<td><code>node_speed_limit</code></td>
+<td>0</td>
+<td>整个节点的总带宽上限，单位 Mbps。0 = 不限<br>例：<code>node_speed_limit=1000</code></td>
+</tr>
+<tr>
+<td><code>user_device_limit</code></td>
+<td>0</td>
+<td>面板没设设备数的用户，最多同时几个 IP 在线。0 = 不限（也可写 <code>user_conn_limit</code>）<br>例：<code>user_device_limit=3</code></td>
+</tr>
+<tr>
+<td><code>device_ipv6_prefix</code></td>
+<td>64</td>
+<td>同一 IPv6 网段算一台设备：手机用 IPv6 时地址会在 /64 内不断变化，按单个地址算会误判超设备数。128 = 按单个地址算；取值 1–128；IPv4 始终按单个地址<br>例：<code>device_ipv6_prefix=56</code></td>
+</tr>
+<tr>
+<td><code>user_tcp_limit</code></td>
+<td>0</td>
+<td>每个用户最多同时多少个连接。0 = 不限<br>例：<code>user_tcp_limit=256</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="动态限速">动态限速<a class="headerlink" href="#动态限速" title="Permanent link">&para;</a></h2>
+<p>说明见<a href="../../features/limits/">用户限制与风控</a>。</p>
+<p>一段时间内持续高速下载的用户，自动临时降速一段时间，防止少数人占满带宽。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dy_limit_enable</code></td>
+<td>false</td>
+<td>总开关<br>例：<code>dy_limit_enable=true</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_duration</code></td>
+<td>全天</td>
+<td>只在这些时间段生效，可以写多段、可以跨零点。留空 = 全天<br>例：<code>dy_limit_duration=20:00-02:00,10:00-14:00</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_trigger_time</code></td>
+<td>60</td>
+<td>统计多少秒内的平均速度<br>例：<code>dy_limit_trigger_time=60</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_trigger_speed</code></td>
+<td>100</td>
+<td>平均速度超过这么多 Mbps 就触发<br>例：<code>dy_limit_trigger_speed=100</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_speed</code></td>
+<td>30</td>
+<td>触发后限速到这么多 Mbps<br>例：<code>dy_limit_speed=30</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_time</code></td>
+<td>600</td>
+<td>限速持续多少秒<br>例：<code>dy_limit_time=600</code></td>
+</tr>
+<tr>
+<td><code>dy_limit_white_user_id</code></td>
+<td>—</td>
+<td>不受动态限速的用户 ID，逗号分隔<br>例：<code>dy_limit_white_user_id=1,25,108</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="审计与屏蔽">审计与屏蔽<a class="headerlink" href="#审计与屏蔽" title="Permanent link">&para;</a></h2>
+<p>规则文件的写法见<a href="../../features/audit/">审计与屏蔽</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>forbidden_bit_torrent</code></td>
+<td>true</td>
+<td>屏蔽 BT 下载。<code>false</code> = 允许<br>例：<code>forbidden_bit_torrent=false</code></td>
+</tr>
+<tr>
+<td><code>forbidden_private_ip</code></td>
+<td>true</td>
+<td>禁止访问内网地址（防止用户访问节点所在的内网）<br>例：<code>forbidden_private_ip=true</code></td>
+</tr>
+<tr>
+<td><code>forbidden_ports</code></td>
+<td>—</td>
+<td>禁止访问的目标端口，可写区间。屏蔽 25/465/587 可防止被用来发垃圾邮件<br>例：<code>forbidden_ports=25,465,587,1000-2000</code></td>
+</tr>
+<tr>
+<td><code>block_list_file</code></td>
+<td>—</td>
+<td>本地审计规则文件<br>例：<code>block_list_file=/etc/kaze/block.txt</code></td>
+</tr>
+<tr>
+<td><code>block_list_url</code></td>
+<td>—</td>
+<td>远程审计规则地址，定时自动更新<br>例：<code>block_list_url=https://example.com/block.txt</code></td>
+</tr>
+<tr>
+<td><code>block_list_update_interval</code></td>
+<td>60</td>
+<td>远程规则的更新间隔，单位分钟<br>例：<code>block_list_update_interval=120</code></td>
+</tr>
+<tr>
+<td><code>white_list_file</code></td>
+<td>—</td>
+<td>白名单文件，命中的不受审计规则限制<br>例：<code>white_list_file=/etc/kaze/white.txt</code></td>
+</tr>
+<tr>
+<td><code>geosite_file</code></td>
+<td>同目录 geosite.dat</td>
+<td>geosite 数据文件，规则里用 <code>geosite:</code> 时需要。<code>kaze geo</code> 可一键下载<br>例：<code>geosite_file=/etc/kaze/geosite.dat</code></td>
+</tr>
+<tr>
+<td><code>geo_update_interval</code></td>
+<td>7</td>
+<td>geo 数据文件超过这么多天就自动重新下载，只更新节点上已有的文件。0 = 不自动更新<br>例：<code>geo_update_interval=3</code></td>
+</tr>
+<tr>
+<td><code>geoip_file</code></td>
+<td>同目录 geoip.dat</td>
+<td>geoip 数据文件，规则里用 <code>geoip:</code> 时需要<br>例：<code>geoip_file=/etc/kaze/geoip.dat</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="路由与出口">路由与出口<a class="headerlink" href="#路由与出口" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routes_file</code></td>
+<td>—</td>
+<td>本机路由文件（出口、出口组、规则），写法见<a href="../../features/routing/">分流与出口</a>。改了保存即生效，不用重启<br>例：<code>routes_file=/etc/kaze/routes.conf</code></td>
+</tr>
+<tr>
+<td><code>routes_url</code></td>
+<td>—</td>
+<td>从网上定时拉取路由文件，代替 <code>routes_file</code>（两者只能设一个），多台节点共用一份。必须以 <code>https://</code> 或 <code>http://</code> 开头。<br>例：<code>routes_url=https://example.com/kaze/routes.conf</code></td>
+</tr>
+<tr>
+<td><code>routes_update_interval</code></td>
+<td>60</td>
+<td><code>routes_url</code> 的更新间隔，单位分钟<br>例：<code>routes_update_interval=30</code></td>
+</tr>
+<tr>
+<td><code>auto_out_ip</code></td>
+<td>false</td>
+<td>源进源出：多 IP 机器上，从哪个 IP 进来就从哪个 IP 出去<br>例：<code>auto_out_ip=true</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="dns">DNS<a class="headerlink" href="#dns" title="Permanent link">&para;</a></h2>
+<p>详见 <a href="../../features/dns/">DNS 解析</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default_dns</code></td>
+<td>系统 DNS</td>
+<td>DNS 服务器，多个用逗号分隔，前一个失败用下一个。写法：<code>8.8.8.8</code>（普通 UDP）、<code>tcp://8.8.8.8</code>、<code>tls://1.1.1.1</code>（DoT）、<code>https://1.1.1.1/dns-query</code>（DoH）<br>例：<code>default_dns=https://1.1.1.1/dns-query,8.8.8.8</code></td>
+</tr>
+<tr>
+<td><code>dns_rules_file</code></td>
+<td>—</td>
+<td>按域名分流的 DNS 规则文件<br>例：<code>dns_rules_file=/etc/kaze/dns.conf</code></td>
+</tr>
+<tr>
+<td><code>dns_cache_time</code></td>
+<td>10</td>
+<td>DNS 结果缓存时间，单位分钟<br>例：<code>dns_cache_time=30</code></td>
+</tr>
+<tr>
+<td><code>dns_strategy</code></td>
+<td>ipv4_first</td>
+<td><code>ipv4_first</code>（优先 IPv4）/ <code>ipv4_only</code>（只用 IPv4，机器没有 IPv6 时用）/ <code>ipv6_first</code> / <code>ipv6_only</code><br>例：<code>dns_strategy=ipv4_only</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="端口跳跃">端口跳跃<a class="headerlink" href="#端口跳跃" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hop_ports</code></td>
+<td>—</td>
+<td>Hysteria2 / TUIC 端口跳跃的端口段，和面板「连接端口」一致。<code>20000-30000</code> 和 <code>20000:30000</code> 都认，单个端口也行，多段用逗号：<code>20000-25000,30000-35000</code>。见<a href="../../features/port-hopping/">端口跳跃</a><br>例：<code>hop_ports=20000-30000</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="证书">证书<a class="headerlink" href="#证书" title="Permanent link">&para;</a></h2>
+<p>一般不用在节点上设置：证书模式、域名在面板里填即可（Xboard：节点管理 → 编辑节点 → 高级协议配置 → TLS；其它面板见<a href="../../panel/compat/">面板设置对照</a>）。这里的设置用于面板没有提供的情况，详见 <a href="../../features/cert/">TLS 证书</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cert_mode</code></td>
+<td>—</td>
+<td><code>http</code> = 自动申请（需开放 80 端口）/ <code>dns</code> = DNS 验证自动申请 / <code>file</code> = 用自己的证书文件 / <code>self</code> = 自签 / <code>none</code> = 不设，和留空一样。面板里的 <code>content</code>、<code>remote</code>（面板下发证书）只在面板选<br>例：<code>cert_mode=http</code></td>
+</tr>
+<tr>
+<td><code>cert_domain</code></td>
+<td>—</td>
+<td>证书域名，要解析到这台机器<br>例：<code>cert_domain=node1.example.com</code></td>
+</tr>
+<tr>
+<td><code>cert_email</code></td>
+<td>—</td>
+<td>自动申请时登记的邮箱，用于证书到期提醒<br>例：<code>cert_email=you@example.com</code></td>
+</tr>
+<tr>
+<td><code>cert_dns_provider</code></td>
+<td>—</td>
+<td>DNS 验证的服务商：<code>cloudflare</code> / <code>alidns</code>（阿里云）/ <code>tencentcloud</code>（腾讯云 DNSPod）（也可写 <code>dns_provider</code>）<br>例：<code>cert_dns_provider=cloudflare</code></td>
+</tr>
+<tr>
+<td><code>cert_dns_env</code></td>
+<td>—</td>
+<td>DNS 服务商的密钥。多个用逗号分隔，如 <code>ALICLOUD_ACCESS_KEY=xxx,ALICLOUD_SECRET_KEY=yyy</code>（也可写 <code>dns_env</code>）<br>例：<code>cert_dns_env=CLOUDFLARE_DNS_API_TOKEN=你的令牌</code></td>
+</tr>
+<tr>
+<td><code>cert_file</code></td>
+<td>—</td>
+<td>证书文件路径（<code>cert_mode=file</code> 时），文件更新后自动重新加载<br>例：<code>cert_file=/etc/kaze/cert.pem</code></td>
+</tr>
+<tr>
+<td><code>key_file</code></td>
+<td>—</td>
+<td>证书私钥文件路径<br>例：<code>key_file=/etc/kaze/key.pem</code></td>
+</tr>
+<tr>
+<td><code>force_close_ssl</code></td>
+<td>false</td>
+<td>前面有 nginx 等负责 TLS 时打开，kaze 不再处理 TLS<br>例：<code>force_close_ssl=true</code></td>
+</tr>
+<tr>
+<td><code>fallback</code></td>
+<td>内置页面</td>
+<td>用自己证书做 TLS 的节点（Trojan、VLESS、VMess、AnyTLS、Naive、开了 TLS 的 SOCKS5 / HTTP，以及 WebSocket / HTTPUpgrade / gRPC / H2 / XHTTP 传输）对不是用户的访问者表现为一台网站服务器。<code>fallback=127.0.0.1:8080</code>：整条连接交给本机真实网站（推荐）；<code>fallback=http://127.0.0.1:8080</code>：反向代理到一个网站；<code>fallback=none</code>：不回落（旧行为，容易被主动探测认出）。旧名 <code>trojan_fallback</code> 仍可用</td>
+</tr>
+<tr>
+<td><code>fallback_dir</code></td>
+<td>—</td>
+<td>不写 <code>fallback</code> 时，用这个目录里的静态文件当网站，放一个 <code>index.html</code> 即可。两个都不写时用内置的小页面，每个节点内容不同<br>例：<code>fallback_dir=/var/www/site</code></td>
+</tr>
+<tr>
+<td><code>strict_alpn</code></td>
+<td><code>false</code></td>
+<td>客户端声明的应用协议（ALPN）与节点对不上时，按网站服务器的方式拒绝握手。默认对只声明 <code>h2</code> 或 <code>h3</code> 的客户端放行（部分订阅这样下发）；确认客户端都带 <code>http/1.1</code> 后可设 <code>true</code></td>
+</tr>
+<tr>
+<td><code>reality_max_time_diff</code></td>
+<td><code>120</code></td>
+<td>REALITY 节点只接受与本机时间相差不超过这么多秒的握手，并记住这段时间内见过的握手；重放或过期的握手当作陌生连接转给伪装站点。<code>0</code> 表示不检查（不建议）。客户端时间不准会连不上，节点日志会记录相差的秒数</td>
+</tr>
+<tr>
+<td><code>reality_mirror</code></td>
+<td><code>on</code></td>
+<td>REALITY 节点给已认证客户端的握手回包按伪装站点的形态来回。<code>on</code>：形态和回应时间都模仿；<code>shape</code>：只模仿形态，不等待；<code>off</code>：不模仿。伪装站点连不上时节点照常服务，只是不模仿，日志警告<br>例：<code>reality_mirror=shape</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="中转与真实-ip">中转与真实 IP<a class="headerlink" href="#中转与真实-ip" title="Permanent link">&para;</a></h2>
+<p>详见<a href="../../features/realip/">真实 IP</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trusted_proxies</code></td>
+<td><code>private,cloudflare</code></td>
+<td>允许告诉节点「用户真实 IP」的上游：PROXY 协议头只认来自这些地址的连接，<code>trusted_x_forwarded_for</code> 里的请求头也只认来自这些地址的请求。写 CIDR / IP，逗号分隔；<code>private</code> = 内网和本机，<code>cloudflare</code> = Cloudflare 的 IP 段。中转机是公网 IP 时要把它加进来<br>例：<code>trusted_proxies=private,cloudflare,203.0.113.5</code></td>
+</tr>
+<tr>
+<td><code>trusted_x_forwarded_for</code></td>
+<td>—</td>
+<td>套了 CDN 或反代时，从这个请求头读用户真实 IP。Cloudflare 用 <code>CF-Connecting-IP</code>，其他通常是 <code>X-Forwarded-For</code>，多个用逗号分隔<br>例：<code>trusted_x_forwarded_for=CF-Connecting-IP</code></td>
+</tr>
+<tr>
+<td><code>proxy_protocol</code></td>
+<td>false</td>
+<td>前面有中转（HAProxy、nginx stream、gost 等）并发送 PROXY 头时打开，读取用户真实 IP<br>例：<code>proxy_protocol=true</code></td>
+</tr>
+<tr>
+<td><code>force_proxy_protocol</code></td>
+<td>false</td>
+<td>只接受带 PROXY 头的连接，其余拒绝（防止绕过中转直连）<br>例：<code>force_proxy_protocol=true</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="防爆破">防爆破<a class="headerlink" href="#防爆破" title="Permanent link">&para;</a></h2>
+<p>说明见<a href="../../features/limits/">用户限制与风控</a>。</p>
+<p>有人反复用错误的密码连接时，临时封禁他的 IP。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>invalid_access_enable</code></td>
+<td>false</td>
+<td>总开关<br>例：<code>invalid_access_enable=true</code></td>
+</tr>
+<tr>
+<td><code>invalid_access_count</code></td>
+<td>30</td>
+<td>统计窗口内失败多少次就封禁<br>例：<code>invalid_access_count=30</code></td>
+</tr>
+<tr>
+<td><code>invalid_access_duration</code></td>
+<td>60</td>
+<td>统计窗口，单位秒<br>例：<code>invalid_access_duration=60</code></td>
+</tr>
+<tr>
+<td><code>invalid_access_forbidden_time</code></td>
+<td>600</td>
+<td>封禁多久，单位秒<br>例：<code>invalid_access_forbidden_time=3600</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="授权">授权<a class="headerlink" href="#授权" title="Permanent link">&para;</a></h2>
+<p>详见<a href="../../license/">授权</a>。不填就是免费版（每节点按用户 ID 从小到大服务前 100 个有效用户）；授权在 Telegram 机器人购买，见<a href="../../#购买授权">首页</a>。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>license_key</code></td>
+<td>—</td>
+<td>授权码（也可写 <code>license</code>）<br>例：<code>license_key=KZ-XXXX-XXXX-XXXX</code></td>
+</tr>
+<tr>
+<td><code>license_file</code></td>
+<td>—</td>
+<td>或者把授权码放在文件里<br>例：<code>license_file=/etc/kaze/license.txt</code></td>
+</tr>
+<tr>
+<td><code>license_server</code></td>
+<td><code>https://auth.kazecore.dev</code></td>
+<td>授权签到地址，一般不用改<br>例：<code>license_server=https://auth.kazecore.dev</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="单节点独立设置">单节点独立设置<a class="headerlink" href="#单节点独立设置" title="Permanent link">&para;</a></h2>
+<p>一个进程跑多个节点时，用 <code>[node 节点ID]</code> 段落给某个节点单独设置，只对它生效。有自己段落的节点不必再写进 <code>node_id</code>（下面的节点 5 就没写）。<code>node_id</code>、<code>license</code>、<code>license_key</code>、<code>license_file</code>、<code>log_level</code> 五项对整个进程生效，不能写在段落里，写了 <code>kaze check</code> 会报错；其余设置都可以。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="na">type</span><span class="o">=</span><span class="s">xboard</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="na">node_id</span><span class="o">=</span><span class="s">1</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="na">panel_url</span><span class="o">=</span><span class="s">https://panel.example.com</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="na">panel_key</span><span class="o">=</span><span class="s">你的通讯密钥</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="na">license_key</span><span class="o">=</span><span class="s">KZ-XXXX-XXXX-XXXX</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">[node 5]</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="na">cert_mode</span><span class="o">=</span><span class="s">http</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="na">cert_domain</span><span class="o">=</span><span class="s">node5.example.com</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="na">forbidden_bit_torrent</span><span class="o">=</span><span class="s">false</span>
+</code></pre></div>
+<h2 id="多个面板">多个面板<a class="headerlink" href="#多个面板" title="Permanent link">&para;</a></h2>
+<p>一个进程对接多个面板时，用 <code>[panel 名字]</code> 段落写第二个面板：段里写它自己的 <code>type</code>、<code>panel_url</code>、<code>panel_key</code>、<code>node_id</code>（或 <code>machine_id</code>）、<code>license_key</code>，其余设置从文件开头的公共部分继承；段落后面的 <code>[node N]</code> 属于这个面板。名字是 1–32 位小写字母、数字、<code>-</code> 或 <code>_</code>。详见<a href="../../panel/multi-panel/">一台机器多个面板</a>。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">type</span><span class="o">=</span><span class="s">xboard</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="na">node_id</span><span class="o">=</span><span class="s">1</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="na">panel_url</span><span class="o">=</span><span class="s">https://a.example.com</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="na">panel_key</span><span class="o">=</span><span class="s">面板 A 的通讯密钥</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="na">license_key</span><span class="o">=</span><span class="s">KZ-AAAA-AAAA-AAAA</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="na">user_speed_limit</span><span class="o">=</span><span class="s">100</span><span class="w">           </span><span class="c1"># 两个面板都生效</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">[panel b]</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="na">type</span><span class="o">=</span><span class="s">xboard</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="na">node_id</span><span class="o">=</span><span class="s">7</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="na">panel_url</span><span class="o">=</span><span class="s">https://b.example.com</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="na">panel_key</span><span class="o">=</span><span class="s">面板 B 的通讯密钥</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="na">license_key</span><span class="o">=</span><span class="s">KZ-BBBB-BBBB-BBBB</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="na">[node 7]                       # 面板 B 的节点 7</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="na">cert_mode</span><span class="o">=</span><span class="s">http</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="na">cert_domain</span><span class="o">=</span><span class="s">node7.example.com</span>
+</code></pre></div>
+<p>每个面板段都要写自己的 <code>panel_url</code>、<code>panel_key</code> 和授权码，不从公共部分继承；<code>log_level</code> 对整个进程生效，不能写在段里。文件开头不写 <code>node_id</code> 时，公共部分只是共享设置，不算一个面板。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../performance/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 性能对比">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                性能对比
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cli/" class="md-footer__link md-footer__link--next" aria-label="下一页: 命令行">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                命令行
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      文档对应 kaze v0.5.9 · Copyright &copy; 2026 kaze · <a href="https://t.me/kaze_core">频道 @kaze_core</a> · <a href="https://t.me/kaze_auth_bot">购买 @kaze_auth_bot</a> · <a href="https://github.com/kazeproxy/kaze-release/releases">下载与发布记录</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_core" target="_blank" rel="noopener" title="频道 @kaze_core" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_auth_bot" target="_blank" rel="noopener" title="购买授权 @kaze_auth_bot" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M24-16C10.7-16 0-5.3 0 8s10.7 24 24 24h45.3c3.9 0 7.2 2.8 7.9 6.6l52.1 286.3c6.2 34.2 36 59.1 70.8 59.1H456c13.3 0 24-10.7 24-24s-10.7-24-24-24H200.1c-11.6 0-21.5-8.3-23.6-19.7l-5.1-28.3H475c30.8 0 57.2-21.9 62.9-52.2l31-165.9c3.7-19.7-11.4-37.9-31.5-37.9H124.7l-.4-2c-4.8-26.6-28-46-55.1-46zm184 528a48 48 0 1 0 0-96 48 48 0 1 0 0 96m224 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/kazeproxy/kaze-release" target="_blank" rel="noopener" title="下载" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

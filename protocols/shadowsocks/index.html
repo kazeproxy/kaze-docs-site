@@ -1,0 +1,2803 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对接 Xboard / V2board / PPanel 的高性能代理节点后端">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kazecore.dev/protocols/shadowsocks/">
+      
+      
+        <link rel="prev" href="../trojan/">
+      
+      
+        <link rel="next" href="../hysteria2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon-64.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Shadowsocks - kaze core</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#shadowsocks" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="kaze core" class="md-header__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            kaze core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Shadowsocks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quickstart/prepare/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  协议搭建
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../panel/xboard/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  面板对接
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/limits/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  功能配置
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  授权
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../performance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  性能对比
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/all-settings/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  参考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kaze core" class="md-nav__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    kaze core
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/prepare/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    准备工作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一键安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker 部署
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker 部署
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装 Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署 kaze
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    手动安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    不接面板，直接搭节点
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级与卸载
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议搭建
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    协议搭建
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLESS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vmess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VMess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trojan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trojan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shadowsocks
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shadowsocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#推荐组合" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        推荐组合
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#面板里怎么填" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        面板里怎么填
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#节点配置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点配置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#加密方式怎么选" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        加密方式怎么选
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#插件simple-obfs-与-shadow-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        插件：simple-obfs 与 Shadow TLS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#订阅排障" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        订阅排障
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#客户端怎么连" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        客户端怎么连
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#相关" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hysteria2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hysteria2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tuic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TUIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../anytls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnyTLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../naive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Naive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mieru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mieru
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Snell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../socks-http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOCKS5 / HTTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板对接
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面板对接
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/xboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/xboard-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard 机器模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/multi-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一台机器多个面板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/v2board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/v2node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board（v2node 节点）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/ppanel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PPanel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/compat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板设置对照
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议与传输
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../panel/routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    路由与自定义出站（面板里配）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能配置
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    功能配置
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户限制与风控
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    审计与屏蔽
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分流与出口（节点文件）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS 解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/cert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TLS 证书
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/port-hopping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    端口跳跃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/realip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    真实 IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/multinode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一台机器多节点、多协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能调优
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    授权
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能对比
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    参考
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    参考
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/all-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项速查表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    常见问题与排查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#推荐组合" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        推荐组合
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#面板里怎么填" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        面板里怎么填
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#节点配置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        节点配置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#加密方式怎么选" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        加密方式怎么选
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#插件simple-obfs-与-shadow-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        插件：simple-obfs 与 Shadow TLS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#订阅排障" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        订阅排障
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#客户端怎么连" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        客户端怎么连
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常见问题" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#相关" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        相关
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="shadowsocks">Shadowsocks<a class="headerlink" href="#shadowsocks" title="Permanent link">&para;</a></h1>
+<p>Shadowsocks 是最普及的加密代理协议，几乎所有客户端都支持，不需要域名和证书，TCP 和 UDP 走同一个端口。它本身不伪装成任何东西，需要外观时可以叠加 kaze 内置的 simple-obfs 或 Shadow TLS v3。想要更强的抗探测，看 VLESS + REALITY；想要最广的兼容、最少的配置，Shadowsocks 合适。</p>
+<h2 id="推荐组合">推荐组合<a class="headerlink" href="#推荐组合" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>首选：<code>2022-blake3-aes-128-gcm</code></strong>。主流客户端都支持，用户多时认人快，带时间戳防重放。要求客户端时间准确，和节点相差 30 秒以上会被拒绝。</li>
+<li><strong>备选：<code>aes-128-gcm</code></strong>。兼容最好，密码就是用户 UUID，不看时间。用户多时新 IP 的第一个连接要逐个试用户密钥（kaze 会记住每个 IP 上次的用户来缓解，见<a href="#加密方式怎么选">加密方式怎么选</a>）。</li>
+<li><strong>需要 TLS 外观时</strong>：上面任一加密 + 插件 Shadow TLS（<code>version=3</code>），不需要域名和证书，也不用另跑 shadow-tls 程序。</li>
+</ul>
+<h2 id="面板里怎么填">面板里怎么填<a class="headerlink" href="#面板里怎么填" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Xboard</label><label for="__tabbed_1_2">V2board</label><label for="__tabbed_1_3">PPanel</label><label for="__tabbed_1_4">不接面板（本地模式）</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>节点管理 → 添加节点 → 选 Shadowsocks。节点名称、节点地址、连接端口 / 服务端口、权限组、倍率和其它协议一样填。协议相关的字段：</p>
+<table>
+<thead>
+<tr>
+<th>面板字段</th>
+<th>填什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加密算法</td>
+<td>推荐 <code>2022-blake3-aes-128-gcm</code>。这是可搜索的选择框，预设只有 7 种；要用 <code>xchacha20-ietf-poly1305</code>、<code>aegis-128l</code> 等扩展算法，在搜索框里输入名字，再点「使用 "xxx"（自定义）」，面板会原样下发给节点。<strong>不要选</strong> <code>2022-blake3-chacha20-poly1305</code>，见<a href="#加密方式怎么选">加密方式怎么选</a></td>
+</tr>
+<tr>
+<td>插件</td>
+<td>不用插件选 None；混淆选 Simple Obfs；TLS 外观选 Shadow TLS。V2Ray Plugin、Gost Plugin、ResTLS、KCPTun 节点不内置，见<a href="#插件simple-obfs-与-shadow-tls">插件</a></td>
+</tr>
+<tr>
+<td>插件选项</td>
+<td>选了插件就<strong>必须填</strong>（留空时订阅里不会带插件）。Simple Obfs：<code>obfs=http;obfs-host=www.bing.com</code>（或 <code>obfs=tls</code>）；Shadow TLS：<code>host=伪装域名;password=密码;version=3</code></td>
+</tr>
+<tr>
+<td>客户端指纹</td>
+<td>只在 Shadow TLS / ResTLS 时出现，给客户端用，节点不看</td>
+</tr>
+</tbody>
+</table>
+<p>2022 加密的服务端密钥由面板自动生成并下发，节点上不用填。用 Shadow TLS 时连接端口和服务端口填同一个。</p>
+</div>
+<div class="tabbed-block">
+<p>节点管理 → 添加节点 → Shadowsocks。协议相关的字段：</p>
+<table>
+<thead>
+<tr>
+<th>面板字段</th>
+<th>填什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加密算法</td>
+<td>下拉框里 6 种：<code>aes-128-gcm</code>、<code>aes-192-gcm</code>、<code>aes-256-gcm</code>、<code>chacha20-ietf-poly1305</code>、<code>2022-blake3-aes-128-gcm</code>、<code>2022-blake3-aes-256-gcm</code>。推荐 <code>2022-blake3-aes-128-gcm</code></td>
+</tr>
+<tr>
+<td>混淆</td>
+<td>无，或 HTTP（simple-obfs 的 http 模式），选 HTTP 后可填路径和 Host</td>
+</tr>
+</tbody>
+</table>
+<p>V2board 的 Shadowsocks 节点没有插件字段，不能用 Shadow TLS，也没有 simple-obfs 的 tls 模式。2022 的服务端密钥由面板下发。节点配置里 <code>server_type=ss</code>。</p>
+</div>
+<div class="tabbed-block">
+<p>在服务器里启用 Shadowsocks 协议，设端口和加密方式。</p>
+<ul>
+<li>2022 加密要填服务端密钥。kaze 按原文使用这串密钥，长度要正好是 16 个字符（<code>2022-blake3-aes-128-gcm</code>）或 32 个字符（<code>2022-blake3-aes-256-gcm</code>），否则节点起不来。</li>
+<li>混淆字段只支持 http；插件支持 simple-obfs（http / tls）和 Shadow TLS（版本要选 3）。v2ray-plugin、gost-plugin、restls、kcptun 不支持，启动日志会写明。</li>
+<li>节点配置里 <code>server_type=ss</code>（或 <code>shadowsocks</code>），见<a href="../../panel/ppanel/">对接 PPanel</a>。</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>经典加密：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="na">type</span><span class="o">=</span><span class="s">local</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">server_type</span><span class="o">=</span><span class="s">ss</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">port</span><span class="o">=</span><span class="s">8388</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="na">cipher</span><span class="o">=</span><span class="s">aes-128-gcm</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="na">users</span><span class="o">=</span><span class="s">alice:密码1,bob:密码2</span>
+</code></pre></div>
+<p>2022 加密：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="na">type</span><span class="o">=</span><span class="s">local</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="na">server_type</span><span class="o">=</span><span class="s">ss</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="na">port</span><span class="o">=</span><span class="s">8388</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="na">cipher</span><span class="o">=</span><span class="s">2022-blake3-aes-128-gcm</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="na">server_key</span><span class="o">=</span><span class="s">MDEyMzQ1Njc4OWFiY2RlZg==</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="na">users</span><span class="o">=</span><span class="s">alice:4f8a1c2e-0000-4000-8000-000000000001</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>server_type</code></td>
+<td><code>ss</code> 或 <code>shadowsocks</code></td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>监听端口，TCP 和 UDP 同一个</td>
+</tr>
+<tr>
+<td><code>cipher</code></td>
+<td>加密方式，可选值见<a href="#加密方式怎么选">加密方式怎么选</a></td>
+</tr>
+<tr>
+<td><code>server_key</code></td>
+<td>只有 2022 加密要填，必填。用 <code>openssl rand -base64 16</code> 生成（<code>2022-blake3-aes-256-gcm</code> 用 <code>32</code>）</td>
+</tr>
+<tr>
+<td><code>users</code></td>
+<td><code>名字:密钥</code>，逗号隔开，名字和密钥都不能重复</td>
+</tr>
+<tr>
+<td><code>plugin</code> / <code>plugin_opts</code></td>
+<td>可选。混淆：<code>plugin=obfs</code> + <code>plugin_opts=obfs=http;obfs-host=www.bing.com</code>（或 <code>obfs=tls</code>）；Shadow TLS：<code>plugin=shadow-tls</code> + <code>plugin_opts=host=伪装域名;password=密码;version=3</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>users</code> 里的密钥：经典加密就是客户端填的密码；2022 加密要写 UUID，<strong>不要写 base64 密钥</strong>（kaze 会把它当 UUID 截取，算出的用户密钥就对不上了），客户端的密码也<strong>不是</strong>这个 UUID，而是 <code>服务端密钥:用户密钥</code> 一整串。运行 <code>kaze check</code> 会打印每个用户的客户端密码（<code>alice: client password ...</code>），照抄给客户端。更多见<a href="../../quickstart/local/">不接面板，直接搭节点</a>。</p>
+</div>
+</div>
+</div>
+<h2 id="节点配置">节点配置<a class="headerlink" href="#节点配置" title="Permanent link">&para;</a></h2>
+<p>接面板时节点这边只要写面板信息，加密、端口、插件、2022 服务端密钥都由面板下发。Shadowsocks 不需要 TLS 证书（Shadow TLS 借用伪装站的握手，也不需要）。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="na">type</span><span class="o">=</span><span class="s">xboard</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="na">node_id</span><span class="o">=</span><span class="s">1</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="na">panel_url</span><span class="o">=</span><span class="s">https://panel.example.com</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="na">panel_key</span><span class="o">=</span><span class="s">通讯密钥</span>
+</code></pre></div>
+<p>V2board 和 PPanel 要加 <code>server_type=ss</code>（PPanel 的 <code>node_id</code> 是服务器 ID）。防火墙要同时放行这个端口的 <strong>TCP 和 UDP</strong>。</p>
+<p>启动后看日志里的 <code>listening</code> 一行，<code>transport</code> 字段会写出实际提供的组合，例如 <code>tcp+shadow-tls+2022-blake3-aes-128-gcm</code>、<code>tcp+obfs-http+aes-128-gcm</code>，可以用来确认面板设置是否生效。</p>
+<h2 id="加密方式怎么选">加密方式怎么选<a class="headerlink" href="#加密方式怎么选" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>加密方式</th>
+<th>客户端</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>2022-blake3-aes-128-gcm</code></td>
+<td>主流客户端</td>
+<td><strong>首选</strong>。用户多也能直接认出是谁；带时间戳，防重放；客户端时间要准（±30 秒）</td>
+</tr>
+<tr>
+<td><code>2022-blake3-aes-256-gcm</code></td>
+<td>主流客户端</td>
+<td>同上，密钥更长</td>
+</tr>
+<tr>
+<td><code>aes-128-gcm</code></td>
+<td>几乎所有</td>
+<td><strong>兼容首选</strong>。密码就是 UUID，不看时间</td>
+</tr>
+<tr>
+<td><code>aes-192-gcm</code>、<code>aes-256-gcm</code></td>
+<td>几乎所有</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>chacha20-ietf-poly1305</code></td>
+<td>几乎所有</td>
+<td>兼容好，但在节点上明显慢于 AES-GCM（见下方实测）</td>
+</tr>
+<tr>
+<td><code>xchacha20-ietf-poly1305</code></td>
+<td>部分</td>
+<td>只为兼容</td>
+</tr>
+<tr>
+<td><code>aegis-128l</code>、<code>aegis-256</code></td>
+<td>仅 mihomo / Clash.Meta 类</td>
+<td>最快，但客户端少</td>
+</tr>
+<tr>
+<td><code>aez-384</code>、<code>deoxys-ii-256-128</code>、<code>ascon128</code>、<code>ascon128a</code>、<code>lea-128-gcm</code>、<code>lea-192-gcm</code>、<code>lea-256-gcm</code>、<code>rabbit128-poly1305</code></td>
+<td>仅 mihomo / Clash.Meta 类</td>
+<td>比 AES-GCM 慢、客户端少，只为兼容已有配置，不推荐专门选</td>
+</tr>
+</tbody>
+</table>
+<p>单核速度参考（Apple M4）：<code>aegis-128l</code> 约 20 GB/s，<code>aes-128-gcm</code> 约 9 GB/s，<code>chacha20-ietf-poly1305</code> 约 1.4 GB/s。大多数节点的瓶颈在带宽而不在加密，所以不必为了速度换成只有少数客户端能用的算法。</p>
+<p><strong>经典加密（aes-gcm、chacha20 等）用户多时</strong>：协议里没有用户标识，节点要拿每个用户的密钥试解。kaze 先试这个 IP 上次认出的用户，再试 15 分钟内活跃过的用户，最后才全表查找，所以老用户通常一次就中，只有新 IP 的第一个连接要多花些 CPU。一个 IP 一分钟内 10 次全表查找都没找到人（扫描器、用着旧密码的客户端），之后 10 分钟这个 IP 每秒只给查一次。用户几千人的节点建议用 2022。</p>
+<div class="admonition warning">
+<p class="admonition-title">不支持 <code>2022-blake3-chacha20-poly1305</code></p>
+<p>SS2022 的多用户身份头只定义在 AES 上。Xboard 给这种加密生成的是「服务端密钥:用户密钥」两段密码，但不给节点下发服务端密钥；mihomo 和 sing-box 拿到这种组合也会直接拒绝加载（<code>Shadowsocks 2022 EIH support only available in AES ciphers</code>）。请改用 <code>2022-blake3-aes-128-gcm</code> 或 <code>2022-blake3-aes-256-gcm</code>。</p>
+</div>
+<p><strong>2022 的密码</strong>：客户端密码是 <code>服务端密钥:用户密钥</code>，用户密钥由用户 UUID 转成 base64（Xboard 和 kaze 算法一致）。接面板时这串由面板写进订阅；本地模式用 <code>kaze check</code> 打印。</p>
+<h2 id="插件simple-obfs-与-shadow-tls">插件：simple-obfs 与 Shadow TLS<a class="headerlink" href="#插件simple-obfs-与-shadow-tls" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>节点</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>simple-obfs（http / tls）</td>
+<td>内置，不需要另装 obfs-server</td>
+<td>伪装成 HTTP 请求或 TLS 握手：免流的 Host 混淆、只放行 HTTP / HTTPS 的网络。对所有加密方式都可用</td>
+</tr>
+<tr>
+<td>Shadow TLS v3</td>
+<td>内置，不需要另跑 shadow-tls，也不多占端口</td>
+<td>和真实网站完成真正的 TLS 握手，外观就是访问那个网站</td>
+</tr>
+<tr>
+<td>v2ray-plugin、gost-plugin、kcptun、restls</td>
+<td>不内置</td>
+<td>节点只提供<strong>不带插件</strong>的 Shadowsocks，并在日志里提示；要用得自己在前面跑插件的服务端</td>
+</tr>
+</tbody>
+</table>
+<p><strong>simple-obfs</strong></p>
+<ul>
+<li>Xboard：插件选 Simple Obfs，插件选项 <code>obfs=http;obfs-host=www.bing.com</code> 或 <code>obfs=tls;obfs-host=www.bing.com</code>。插件名写 <code>obfs</code>、<code>obfs-local</code>、<code>simple-obfs</code>、<code>obfs-http</code>、<code>obfs-tls</code> 节点都认。</li>
+<li>用 <code>obfs=</code> 而不是 <code>mode=</code> 写模式：节点两种都认，但 Xboard 给 Surge、Stash、Loon、Quantumult X 等生成订阅时只读 <code>obfs=</code> 和 <code>obfs-host=</code>。</li>
+<li>本地模式：<code>plugin=obfs</code> + <code>plugin_opts=obfs=http;obfs-host=www.bing.com</code>。</li>
+<li><code>obfs-host</code> 是给客户端用的伪装域名，节点不校验。</li>
+<li>simple-obfs 的 tls 模式只是模仿 TLS 的样子，不是真的 TLS 握手。想要真实的 TLS 外观用 Shadow TLS。</li>
+</ul>
+<p><strong>Shadow TLS v3</strong></p>
+<ul>
+<li>插件选 Shadow TLS，插件选项 <code>host=伪装域名;password=密码;version=3</code>。伪装站选一个支持 TLS 1.3、节点能正常访问 443 的大站，<code>password</code> 自己随便定一串。</li>
+<li><strong>必须写 <code>version=3</code></strong>。不写时面板给客户端的订阅是 v2，节点只提供 v3，会直接报错不启动。</li>
+<li>面板的连接端口和服务端口填同一个。</li>
+<li>和 simple-obfs 二选一，不能叠加。</li>
+</ul>
+<h2 id="订阅排障">订阅排障<a class="headerlink" href="#订阅排障" title="Permanent link">&para;</a></h2>
+<p>以下是 Xboard 生成订阅时的行为，客户端连不上或看不到节点时按顺序查：</p>
+<ol>
+<li><strong>客户端里根本没有这个节点</strong>：Xboard 按客户端格式过滤加密方式。老 Clash 格式和 SIP008 只放 <code>aes-128-gcm</code>、<code>aes-192-gcm</code>、<code>aes-256-gcm</code>、<code>chacha20-ietf-poly1305</code> 的节点；Surge 再多两种 2022 AES；Stash 要 3.0.0 以上才给 2022 节点。扩展算法（<code>aegis-128l</code> 等）只有 Clash Meta 格式的订阅能用，换用 mihomo / Clash.Meta 类客户端。</li>
+<li><strong>选了插件，订阅里却没有插件</strong>：Xboard 只在「插件」和「插件选项」<strong>都不为空</strong>时才把插件写进订阅。插件选项留空时，Simple Obfs 节点上仍按 http 混淆提供，客户端却不带混淆，必然连不上——把插件选项填完整。</li>
+<li><strong>混淆模式或 Host 对不上</strong>：Clash Meta 订阅里插件选项没写模式时按 <code>http</code>、没写 Host 时按 <code>www.bing.com</code>；Surge、Stash、Loon、Quantumult X 只读 <code>obfs=</code> 和 <code>obfs-host=</code>。统一写成 <code>obfs=http;obfs-host=域名</code> 最稳。</li>
+<li><strong>Shadow TLS 连不上</strong>：插件选项里有没有 <code>version=3</code>（没有时订阅给的是 v2）；连接端口和服务端口是否相同。Shadowrocket 拿 <code>ss://</code> 一行式订阅时解析不出 Shadow TLS 插件，处理办法见<a href="../../panel/xboard/">对接 Xboard</a>。</li>
+<li><strong>2022 节点突然全部连不上</strong>：订阅里的服务端密钥由节点的创建时间算出。删掉重建节点、或把加密在 128 和 256 之间切换后，服务端密钥变了，节点会自动拿到新密钥，但用户手里的旧订阅还是旧密码——让用户更新订阅。</li>
+<li><strong>2022 节点个别用户连不上</strong>：多半是客户端设备时间不准（相差 30 秒以上）。把节点的 <code>log_level</code> 调成 <code>debug</code>，日志里该用户 IP 的 <code>handshake failed</code> 会写明原因。</li>
+</ol>
+<h2 id="客户端怎么连">客户端怎么连<a class="headerlink" href="#客户端怎么连" title="Permanent link">&para;</a></h2>
+<p>订阅会自动带上加密方式、密码和插件。手动配置时要填：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>填什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>服务器 / 端口</td>
+<td>节点地址和连接端口</td>
+</tr>
+<tr>
+<td>加密方式</td>
+<td>和节点一致</td>
+</tr>
+<tr>
+<td>密码</td>
+<td>经典加密：用户 UUID（本地模式是 <code>users</code> 里的密钥）；2022：<code>服务端密钥:用户密钥</code>，从订阅里复制，本地模式用 <code>kaze check</code> 打印的那串</td>
+</tr>
+<tr>
+<td>插件</td>
+<td>混淆：mihomo / Clash.Meta 写 <code>plugin: obfs</code>，<code>plugin-opts</code> 里 <code>mode: http</code>（或 <code>tls</code>）、<code>host: 伪装域名</code>；Shadowrocket 插件选 simple-obfs / obfs-local。Shadow TLS：mihomo 写 <code>plugin: shadow-tls</code>，<code>plugin-opts</code> 里 <code>host</code>、<code>password</code>、<code>version: 3</code></td>
+</tr>
+</tbody>
+</table>
+<p>mihomo / Clash.Meta 示例：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">节点名</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ss</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">节点地址</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8388</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">cipher</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2022-blake3-aes-128-gcm</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">"服务端密钥:用户密钥"</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">udp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<h2 id="常见问题">常见问题<a class="headerlink" href="#常见问题" title="Permanent link">&para;</a></h2>
+<p><strong>日志里出现「shadowsocks: unsupported cipher」</strong> → 面板下发的加密方式节点不认识：多半是选了 <code>2022-blake3-chacha20-poly1305</code>，或自定义算法名打错了 → 改成<a href="#加密方式怎么选">加密方式怎么选</a>表里的名字。</p>
+<p><strong>日志里出现「shadow-tls version 2 is not supported; kaze serves version 3」</strong> → Shadow TLS 插件选项没写 <code>version=3</code>（或写了别的版本），面板默认给客户端 v2 → 插件选项加上 <code>version=3</code>，让用户更新订阅。</p>
+<p><strong>日志里出现「shadow-tls needs host= and password= in the plugin options」</strong> → Shadow TLS 插件选项不完整 → 写成 <code>host=伪装域名;password=密码;version=3</code>。</p>
+<p><strong>日志里出现「this Shadowsocks plugin is not built in; the node serves plain Shadowsocks」</strong> → 选了 v2ray-plugin、gost-plugin、restls、kcptun 等不内置的插件，节点只提供不带插件的 Shadowsocks，订阅里的客户端仍带插件，连不上 → 换成 Simple Obfs 或 Shadow TLS，或自己在前面跑插件的服务端。</p>
+<p><strong>日志里出现「shadowsocks: server key must be 16 bytes in base64」（或 32 bytes）</strong> → 2022 服务端密钥长度不对。本地模式：<code>server_key</code> 用 <code>openssl rand -base64 16</code>（256 位算法用 <code>32</code>）重新生成；PPanel：服务端密钥按原文使用，要正好 16 / 32 个字符。</p>
+<p><strong>日志里出现「Shadowsocks over ws is not supported」</strong> → 节点设了 WebSocket 等传输，Shadowsocks 只跑在 TCP 上 → 传输改为 TCP；要外观用插件。</p>
+<h2 id="相关">相关<a class="headerlink" href="#相关" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../panel/protocols/">协议与传输</a></li>
+<li><a href="../../panel/compat/">面板设置对照</a></li>
+<li><a href="../../panel/xboard/">对接 Xboard</a>、<a href="../../panel/v2board/">对接 V2board</a>、<a href="../../panel/ppanel/">对接 PPanel</a></li>
+<li><a href="../../quickstart/local/">不接面板，直接搭节点</a></li>
+<li><a href="../../reference/all-settings/">配置项速查表</a></li>
+<li><a href="../../faq/">常见问题</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../trojan/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Trojan">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                Trojan
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../hysteria2/" class="md-footer__link md-footer__link--next" aria-label="下一页: Hysteria2">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Hysteria2
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      文档对应 kaze v0.5.9 · Copyright &copy; 2026 kaze · <a href="https://t.me/kaze_core">频道 @kaze_core</a> · <a href="https://t.me/kaze_auth_bot">购买 @kaze_auth_bot</a> · <a href="https://github.com/kazeproxy/kaze-release/releases">下载与发布记录</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_core" target="_blank" rel="noopener" title="频道 @kaze_core" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_auth_bot" target="_blank" rel="noopener" title="购买授权 @kaze_auth_bot" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M24-16C10.7-16 0-5.3 0 8s10.7 24 24 24h45.3c3.9 0 7.2 2.8 7.9 6.6l52.1 286.3c6.2 34.2 36 59.1 70.8 59.1H456c13.3 0 24-10.7 24-24s-10.7-24-24-24H200.1c-11.6 0-21.5-8.3-23.6-19.7l-5.1-28.3H475c30.8 0 57.2-21.9 62.9-52.2l31-165.9c3.7-19.7-11.4-37.9-31.5-37.9H124.7l-.4-2c-4.8-26.6-28-46-55.1-46zm184 528a48 48 0 1 0 0-96 48 48 0 1 0 0 96m224 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/kazeproxy/kaze-release" target="_blank" rel="noopener" title="下载" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
