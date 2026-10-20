@@ -1,0 +1,3602 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="对接 Xboard / V2board / PPanel 的高性能代理节点后端">
+      
+      
+      
+        <link rel="canonical" href="https://docs.kazecore.dev/panel/routing/">
+      
+      
+        <link rel="prev" href="../protocols/">
+      
+      
+        <link rel="next" href="../../features/limits/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon-64.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>路由与自定义出站（面板里配） - kaze core</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#路由与自定义出站面板里配" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="kaze core" class="md-header__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            kaze core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              路由与自定义出站（面板里配）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到暗色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到暗色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到亮色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到亮色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quickstart/prepare/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../protocols/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  协议搭建
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../xboard/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  面板对接
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../features/limits/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  功能配置
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../license/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  授权
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../performance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  性能对比
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/all-settings/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  参考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kaze core" class="md-nav__button md-logo" aria-label="kaze core" data-md-component="logo">
+      
+  <img src="../../assets/logo-mark-white.svg" alt="logo">
+
+    </a>
+    kaze core
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速开始
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    快速开始
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/prepare/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    准备工作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一键安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker 部署
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Docker 部署
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/install-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    安装 Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    部署 kaze
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/manual/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    手动安装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/local/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    不接面板，直接搭节点
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/upgrade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    升级与卸载
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议搭建
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    协议搭建
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/vless/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VLESS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/vmess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VMess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/trojan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trojan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/shadowsocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shadowsocks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/hysteria2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hysteria2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tuic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TUIC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/anytls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnyTLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/naive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Naive
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/mieru/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mieru
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/snell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Snell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/socks-http/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOCKS5 / HTTP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板对接
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面板对接
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../xboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../xboard-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Xboard 机器模式
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multi-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    一台机器多个面板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v2board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v2node/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    V2board（v2node 节点）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ppanel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PPanel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面板设置对照
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    协议与传输
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    路由与自定义出站（面板里配）
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    路由与自定义出站（面板里配）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#一览" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一览
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        匹配规则写法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Xboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xboard-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        路由管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xboard-outbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义 Outbounds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自定义 Outbounds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#outbound-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多个服务器：轮询、主备或测速选最快
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outbound-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        出站套出站（链式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xboard-custom-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义 Routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v2board-v2node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V2board / v2node
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ppanel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPanel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PPanel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-配置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS 配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽规则" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#出站规则" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        出站规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常用配方" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常用配方
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常用配方">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#流媒体和-ai-走-warp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        流媒体和 AI 走 WARP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽-quic让客户端改走-tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽 QUIC，让客户端改走 TCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#中转机转发到落地机" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中转机转发到落地机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽广告和-bt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽广告和 BT
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#规则没生效怎么查" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        规则没生效怎么查
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能配置
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    功能配置
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    用户限制与风控
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    审计与屏蔽
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/routing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分流与出口（节点文件）
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/dns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS 解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/cert/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TLS 证书
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/port-hopping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    端口跳跃
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/realip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    真实 IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/multinode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    多节点、多协议与负载均衡
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能调优
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    授权
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    性能对比
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    参考
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    参考
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/all-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置项速查表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    命令行
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    常见问题与排查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#一览" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一览
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        匹配规则写法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Xboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Xboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xboard-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        路由管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xboard-outbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义 Outbounds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自定义 Outbounds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#outbound-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多个服务器：轮询、主备或测速选最快
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outbound-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        出站套出站（链式）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xboard-custom-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义 Routes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v2board-v2node" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V2board / v2node
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ppanel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PPanel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PPanel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-配置" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS 配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽规则" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#出站规则" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        出站规则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#常用配方" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常用配方
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常用配方">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#流媒体和-ai-走-warp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        流媒体和 AI 走 WARP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽-quic让客户端改走-tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽 QUIC，让客户端改走 TCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#中转机转发到落地机" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        中转机转发到落地机
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#屏蔽广告和-bt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        屏蔽广告和 BT
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#规则没生效怎么查" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        规则没生效怎么查
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="路由与自定义出站面板里配">路由与自定义出站（面板里配）<a class="headerlink" href="#路由与自定义出站面板里配" title="Permanent link">&para;</a></h1>
+<p>在面板里配的分流、屏蔽、出站看这页；写在节点文件里的本机路由、出口组看<a href="../../features/routing/">分流与出口（节点文件）</a>。</p>
+<p>在面板里配置屏蔽、指定 DNS、把部分流量转发到其它服务器。三个面板的设置入口和格式各不相同，本页按面板分别说明，<strong>匹配规则的写法三个面板通用</strong>，统一放在最前面。</p>
+<h2 id="一览">一览<a class="headerlink" href="#一览" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>面板</th>
+<th>设置入口</th>
+<th>能做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Xboard</strong></td>
+<td>「节点管理 → 路由管理」建路由组，节点编辑里的「路由组」勾选</td>
+<td>禁止访问、直连、指定 DNS、转发到自定义出站</td>
+</tr>
+<tr>
+<td></td>
+<td>节点编辑 →「高级协议配置 → 路由」里的「自定义 Outbounds」「自定义 Routes」</td>
+<td>按 Xray 格式定义出站和分流规则，只对这一个节点生效</td>
+</tr>
+<tr>
+<td><strong>V2board / v2node</strong></td>
+<td>「节点管理 → 路由管理」建路由，节点编辑里选择</td>
+<td>按域名 / IP / 端口 / 协议禁止访问、指定 DNS、指定出站服务器、自定义默认出站</td>
+</tr>
+<tr>
+<td><strong>PPanel</strong></td>
+<td>「服务器 → 全局节点默认配置」，单台服务器在「节点配置」里覆盖</td>
+<td>DNS 配置、屏蔽规则、出站规则</td>
+</tr>
+</tbody>
+</table>
+<p>所有规则从上往下匹配，<strong>先命中的生效</strong>，后面的不再看。完整顺序：</p>
+<ol class="kz-chain">
+<li>本机白名单</li>
+<li>本机屏蔽端口 / 屏蔽列表</li>
+<li>本机 DNS 规则</li>
+<li>自定义 Routes <small>Xboard</small></li>
+<li>面板路由管理</li>
+<li>本机路由文件 <small>routes_file</small></li>
+<li>默认出口</li>
+</ol>
+
+<p>本机的几项见 <a href="../../features/audit/">审计与屏蔽</a>、<a href="../../features/dns/">DNS 解析</a>、<a href="../../features/routing/">分流与出口</a>。节点配置里的 <code>forbidden_bit_torrent</code>、<code>forbidden_private_ip</code> 在所有规则之前检查，白名单也不能放行它们。</p>
+<h2 id="match">匹配规则写法<a class="headerlink" href="#match" title="Permanent link">&para;</a></h2>
+<p>面板里的「匹配规则 / 匹配值」每行一条，一条规则里的多行是「或」的关系，命中任意一行即可。</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain:域名</code></td>
+<td>该域名<strong>及其所有子域名</strong></td>
+<td><code>domain:google.com</code> 匹配 <code>google.com</code>、<code>www.google.com</code></td>
+</tr>
+<tr>
+<td><code>full:域名</code></td>
+<td>只匹配这个域名本身</td>
+<td><code>full:www.google.com</code></td>
+</tr>
+<tr>
+<td><code>keyword:关键词</code></td>
+<td>域名里包含这段文字</td>
+<td><code>keyword:netflix</code></td>
+</tr>
+<tr>
+<td><code>regexp:正则</code></td>
+<td>正则表达式</td>
+<td><code>regexp:^ad[0-9]+\.</code></td>
+</tr>
+<tr>
+<td><code>geosite:分类</code></td>
+<td>geosite 域名分类</td>
+<td><code>geosite:netflix</code>、<code>geosite:category-ads-all</code></td>
+</tr>
+<tr>
+<td>IP 或 CIDR</td>
+<td>目标 IP 段</td>
+<td><code>8.8.8.8</code>、<code>10.0.0.0/8</code>、<code>2001:db8::/32</code></td>
+</tr>
+<tr>
+<td><code>geoip:地区</code></td>
+<td>geoip IP 分类</td>
+<td><code>geoip:cn</code>、<code>geoip:private</code></td>
+</tr>
+<tr>
+<td><code>port:端口</code></td>
+<td>目标端口，可写范围，逗号分隔</td>
+<td><code>port:25</code>、<code>port:6881-6889,51413</code></td>
+</tr>
+<tr>
+<td><code>protocol:协议</code></td>
+<td>识别出的应用协议</td>
+<td><code>protocol:bittorrent</code>、<code>protocol:quic</code></td>
+</tr>
+<tr>
+<td>不带前缀的域名</td>
+<td><strong>各面板含义不同</strong>，见下</td>
+<td><code>google.com</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">不带前缀的域名，三个面板含义不同</p>
+<p>kaze 按各面板自家节点的习惯解释，和在原节点上的效果一致：</p>
+<table>
+<thead>
+<tr>
+<th>面板</th>
+<th><code>google.com</code> 匹配</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Xboard</td>
+<td><code>google.com</code> 及其子域名（同 <code>domain:</code>）;<code>*.google.com</code> 也是同样效果</td>
+</tr>
+<tr>
+<td>V2board / v2node</td>
+<td>域名里<strong>包含</strong> <code>google.com</code> 的都算（同 <code>keyword:</code>）</td>
+</tr>
+<tr>
+<td>PPanel</td>
+<td>只匹配 <code>google.com</code> 本身（同 <code>full:</code>）</td>
+</tr>
+</tbody>
+</table>
+<p>不想记差别，就<strong>统一带前缀写</strong>，三个面板效果完全一样。</p>
+</div>
+<p>使用 <code>geosite:</code>、<code>geoip:</code> 前，在节点上执行一次 <code>kaze geo</code> 下载规则数据。没下载时日志会报警告：面板路由里只跳过那一行，规则的其它行照常生效；自定义 Routes 里则整条规则跳过。</p>
+<h2 id="xboard">Xboard<a class="headerlink" href="#xboard" title="Permanent link">&para;</a></h2>
+<h3 id="xboard-routes">路由管理<a class="headerlink" href="#xboard-routes" title="Permanent link">&para;</a></h3>
+<p>在「节点管理 → 路由管理」点「添加路由」，然后在节点编辑页的「路由组」里勾选要生效的路由。</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>动作值</th>
+<th>效果</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>禁止访问</td>
+<td>不填</td>
+<td>命中的连接直接拒绝</td>
+<td>匹配 <code>geosite:category-ads-all</code></td>
+</tr>
+<tr>
+<td>直连</td>
+<td>不填</td>
+<td>从节点本机直接出去，后面的规则不再看</td>
+<td>匹配 <code>domain:apple.com</code></td>
+</tr>
+<tr>
+<td>指定DNS服务器进行解析</td>
+<td>DNS 服务器</td>
+<td>用这个 DNS 解析命中的域名，然后直连</td>
+<td><code>1.1.1.1</code>、<code>https://dns.google/dns-query</code></td>
+</tr>
+<tr>
+<td>转发</td>
+<td>出站标签（tag）</td>
+<td>交给这个节点「自定义 Outbounds」里同名的出站</td>
+<td><code>warp</code></td>
+</tr>
+</tbody>
+</table>
+<p>DNS 服务器的写法：</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>8.8.8.8</code> 或 <code>8.8.8.8:53</code></td>
+<td>普通 DNS(UDP)</td>
+</tr>
+<tr>
+<td><code>tcp://8.8.8.8</code></td>
+<td>DNS over TCP</td>
+</tr>
+<tr>
+<td><code>tls://1.1.1.1</code></td>
+<td>DNS over TLS（默认 853 端口）</td>
+</tr>
+<tr>
+<td><code>https://dns.google/dns-query</code></td>
+<td>DNS over HTTPS</td>
+</tr>
+<tr>
+<td><code>tls://1.1.1.1#cloudflare-dns.com</code></td>
+<td>用 IP 连接，按 <code>#</code> 后的名称验证证书（PPanel 的「TLS 服务器名称」就是这个）</td>
+</tr>
+<tr>
+<td><code>1.1.1.1,8.8.8.8</code></td>
+<td>多个用英文逗号隔开，前一个失败再问下一个</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">「转发」要和自定义 Outbounds 配合</p>
+<p>路由组是所有节点共用的，出站却是每个节点各自定义的。「转发」到 <code>warp</code>，只有在「自定义 Outbounds」里定义了 <code>"tag": "warp"</code> 的节点上才会生效；其它节点上这条规则跳过，流量直连，日志里有一行警告说明原因。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Xray 写法和 sing-box 写法都认，推荐 Xray 写法</p>
+<p>「自定义 Outbounds」和「自定义 Routes」两个框里，Xray 的 JSON（面板提示的格式）和 sing-box 的 JSON 都能识别，可以混用：出站按 <code>protocol</code> / <code>type</code> 判断类型，字段名两套都接受（<code>address</code> 或 <code>server</code>、<code>port</code> 或 <code>server_port</code>、<code>outboundTag</code> 或 <code>outbound</code>……）。推荐按 <strong>Xray 写法</strong> 填，和面板提示、网上教程一致。</p>
+<p>kaze 不认识或不支持的字段（比如出站的 <code>ws</code> / <code>grpc</code> / <code>reality</code> 传输、规则里的 <code>balancerTag</code>、<code>user</code>、<code>source</code>、sing-box 的 <code>rule_set</code>、<code>process_name</code>、<code>clash_mode</code>）会在<strong>节点启动日志里逐条提示</strong>并忽略，其余部分照常生效；<code>kaze check</code> 也会列出来。所以写完看一眼日志就知道有没有被忽略的东西。</p>
+</div>
+<h3 id="xboard-outbounds">自定义 Outbounds<a class="headerlink" href="#xboard-outbounds" title="Permanent link">&para;</a></h3>
+<p>节点编辑 →「高级协议配置」→「路由」→「自定义 Outbounds」，填一个 JSON 数组，每一项是一个出站，格式与 Xray 相同：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">[</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"出站标签"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"类型"</span><span class="p">,</span><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span><span class="w"> </span><span class="nt">"streamSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}}</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">]</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tag</code></td>
+<td>出站的名字，路由规则用它引用，同一节点内不要重复</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>出站类型，见下表</td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>服务器地址、端口、密码等，按类型填写</td>
+</tr>
+<tr>
+<td><code>streamSettings</code></td>
+<td>可选：传输（<code>ws</code> / <code>httpupgrade</code> / <code>grpc</code> / <code>h2</code> / <code>xhttp</code>）和安全层（<code>tls</code> / <code>reality</code>）；不填就是不加密的 TCP。也接受 sing-box 的写法（<code>type</code> + <code>server</code> + <code>tls</code> / <code>transport</code>）</td>
+</tr>
+</tbody>
+</table>
+<p>支持的类型：</p>
+<p>图例：</p>
+<ul>
+<li><span class="twemoji" style="color:#2e7d32"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span> <strong>支持</strong></li>
+<li><span class="twemoji" style="color:#c62828"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span> <strong>不支持</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>protocol</code></th>
+<th>用途</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>freedom</code> / <code>direct</code></td>
+<td>直连（不是代理，引用它等于「直连」）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>blackhole</code> / <code>block</code> / <code>reject</code></td>
+<td>拒绝（引用它等于「禁止访问」）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>wireguard</code></td>
+<td>WireGuard，包括 Cloudflare WARP</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+<tr>
+<td><code>socks</code></td>
+<td>SOCKS5 代理</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+<tr>
+<td><code>http</code></td>
+<td>HTTP 代理</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+</tr>
+<tr>
+<td><code>shadowsocks</code></td>
+<td>转发给另一台 Shadowsocks 服务器，可带插件 <code>shadow-tls</code> / <code>obfs</code> / <code>v2ray-plugin</code></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span> 带插件时见下</td>
+</tr>
+<tr>
+<td><code>trojan</code></td>
+<td>转发给另一台 Trojan 服务器（总是 TLS）</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+<tr>
+<td><code>vless</code></td>
+<td>转发给另一台 VLESS 服务器；<code>flow</code> 可填 <code>xtls-rprx-vision</code>（仅 TCP + TLS / REALITY）</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+<tr>
+<td><code>vmess</code></td>
+<td>转发给另一台 VMess 服务器（alterId 必须为 0）</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+</tbody>
+</table>
+<p>Trojan、VLESS、VMess、Shadowsocks 出站可用的传输：<code>tcp</code>、<code>ws</code>、<code>httpupgrade</code>、<code>grpc</code>、<code>h2</code>、<code>xhttp</code>；安全层：不加密、TLS、REALITY，可用 <code>fingerprint</code> 指定 TLS 指纹（如 <code>chrome</code>）。SOCKS、HTTP、WireGuard 出站只走 TCP。写了不支持的组合（如 <code>kcp</code>、<code>quic</code>、ECH）时该出站不会被启用，日志里会写明要改什么；引用它的规则改为<strong>屏蔽</strong>，流量不会从节点自己的 IP 直连出去，修好后恢复。</p>
+<p>除 HTTP 外的出站都转发 UDP；指向 HTTP 出站的 UDP 流量会被丢弃，<strong>不会</strong>从节点直连泄露 IP。</p>
+<p>Shadowsocks 出站带插件（或传输、TLS）时，插件只伪装 TCP，UDP 默认<strong>丢弃</strong>（同样不会直连），客户端自动改用 TCP。落地机支持 UDP over TCP（kaze、sing-box、mihomo 的服务端都支持）时，加 <code>"udp_over_tcp": true</code>，UDP 就走同一条伪装连接。</p>
+<p>带 Shadow TLS 的 Shadowsocks 出站：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"exit"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadowsocks"</span><span class="p">,</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密钥"</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">   </span><span class="nt">"plugin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadow-tls"</span><span class="p">,</span><span class="w"> </span><span class="nt">"plugin_opts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"host=www.example.com;password=secret;version=3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"udp_over_tcp"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}]}}</span>
+</code></pre></div>
+<p>VLESS + REALITY 出站：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"exit"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vless"</span><span class="p">,</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"vnext"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UUID"</span><span class="p">,</span><span class="w"> </span><span class="nt">"encryption"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">}]}]},</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w"> </span><span class="nt">"streamSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tcp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"security"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reality"</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">   </span><span class="nt">"realitySettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"serverName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"www.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nt">"fingerprint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chrome"</span><span class="p">,</span><span class="w"> </span><span class="nt">"publicKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机公钥"</span><span class="p">,</span><span class="w"> </span><span class="nt">"shortId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0123abcd"</span><span class="p">}}}</span>
+</code></pre></div>
+<p>Trojan + WebSocket 出站：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"exit"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"trojan"</span><span class="p">,</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密码"</span><span class="p">}]},</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w"> </span><span class="nt">"streamSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ws"</span><span class="p">,</span><span class="w"> </span><span class="nt">"security"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tls"</span><span class="p">,</span><span class="w"> </span><span class="nt">"tlsSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"serverName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cdn.example.com"</span><span class="p">},</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">   </span><span class="nt">"wsSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/relay"</span><span class="p">,</span><span class="w"> </span><span class="nt">"headers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"Host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cdn.example.com"</span><span class="p">}}}}</span>
+</code></pre></div>
+<p>各类型 <code>settings</code> 的写法：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">WireGuard / WARP</label><label for="__tabbed_1_2">SOCKS5</label><label for="__tabbed_1_3">HTTP</label><label for="__tabbed_1_4">Shadowsocks</label><label for="__tabbed_1_5">Trojan</label><label for="__tabbed_1_6">VLESS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wireguard"</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"secretKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YO2b...你的私钥..."</span><span class="p">}}</span>
+</code></pre></div>
+<p>只填私钥时，其余参数自动按 Cloudflare WARP 默认值补齐。连接自建 WireGuard 时写全：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wg"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wireguard"</span><span class="p">,</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span><span class="nt">"secretKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"本机私钥"</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"172.16.0.2/32"</span><span class="p">],</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">   </span><span class="nt">"mtu"</span><span class="p">:</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">   </span><span class="nt">"peers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"publicKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"对端公钥"</span><span class="p">,</span><span class="w"> </span><span class="nt">"endpoint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wg.example.com:51820"</span><span class="p">}]</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w"> </span><span class="p">}}</span>
+</code></pre></div>
+<p>WARP 私钥的获取方法见 <a href="../../features/routing/#warp">走 WARP 出口</a>。</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"us"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"socks"</span><span class="p">,</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">1080</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">   </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"用户名"</span><span class="p">,</span><span class="w"> </span><span class="nt">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密码"</span><span class="p">}]</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w"> </span><span class="p">}]}}</span>
+</code></pre></div>
+<p>没有认证就去掉 <code>users</code>。</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"corp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http"</span><span class="p">,</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"proxy.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8080</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">   </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"用户名"</span><span class="p">,</span><span class="w"> </span><span class="nt">"pass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密码"</span><span class="p">}]</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w"> </span><span class="p">}]}}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hk"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadowsocks"</span><span class="p">,</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hk.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8388</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">   </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">   </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机的密钥"</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w"> </span><span class="p">}]}}</span>
+</code></pre></div>
+<p><code>method</code> 支持 <code>aes-128-gcm</code>、<code>aes-192-gcm</code>、<code>aes-256-gcm</code>、<code>chacha20-ietf-poly1305</code>、<code>xchacha20-ietf-poly1305</code>、<code>2022-blake3-aes-128-gcm</code>、<code>2022-blake3-aes-256-gcm</code>；以及 mihomo 扩展的 <code>aegis-128l</code>、<code>aegis-256</code>、<code>aez-384</code>、<code>deoxys-ii-256-128</code>、<code>ascon128</code>、<code>ascon128a</code>、<code>lea-128-gcm</code>、<code>lea-192-gcm</code>、<code>lea-256-gcm</code>、<code>rabbit128-poly1305</code>（这些只有 mihomo / Clash.Meta 类客户端支持）。</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"trojan"</span><span class="p">,</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jp.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">   </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机的密码"</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w"> </span><span class="p">}]},</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w"> </span><span class="nt">"streamSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"security"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tls"</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">   </span><span class="nt">"tlsSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"serverName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jp.example.com"</span><span class="p">}}}</span>
+</code></pre></div>
+<p><code>serverName</code> 不填时用 <code>address</code>。落地机用自签证书时在 <code>tlsSettings</code> 里加 <code>"allowInsecure": true</code>。</p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vless"</span><span class="p">,</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"vnext"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">   </span><span class="nt">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机的 UUID"</span><span class="p">,</span><span class="w"> </span><span class="nt">"encryption"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">}]</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w"> </span><span class="p">}]},</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w"> </span><span class="nt">"streamSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"security"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tls"</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">   </span><span class="nt">"tlsSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"serverName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sg.example.com"</span><span class="p">}}}</span>
+</code></pre></div>
+<p>落地机必须是 VLESS + TCP + TLS（或不加密），不能开 Vision 流控和 REALITY。</p>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>sing-box 风格的扁平写法也能识别，比如 <code>{"tag": "hk", "protocol": "shadowsocks", "settings": {"server": "hk.example.com", "server_port": 8388, "method": "...", "password": "..."}}</code>。</p>
+</div>
+<h4 id="outbound-group">多个服务器：轮询、主备或测速选最快<a class="headerlink" href="#outbound-group" title="Permanent link">&para;</a></h4>
+<p><code>servers</code>（VLESS / VMess 是 <code>vnext</code>）里写几个服务器，这个出站就是一个出口组，路由规则照常指向它的 <code>tag</code>：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"exit"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadowsocks"</span><span class="p">,</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"failover"</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">   </span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">     </span><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.3.4"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8388</span><span class="p">,</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密钥1"</span><span class="p">},</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">     </span><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.6.7.8"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8388</span><span class="p">,</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"密钥2"</span><span class="p">}]}}</span>
+</code></pre></div>
+<p><code>strategy</code> 决定怎么分配：</p>
+<table>
+<thead>
+<tr>
+<th><code>strategy</code></th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不写，或 <code>round_robin</code></td>
+<td>新连接轮流用每个服务器</td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td>每个新连接随机挑一个</td>
+</tr>
+<tr>
+<td><code>failover</code></td>
+<td>主备：一直用第一个，它连不上时才用下一个</td>
+</tr>
+<tr>
+<td><code>least_ping</code>（也可写 <code>leastPing</code>）</td>
+<td>测速：定期通过每个服务器请求一个小地址，新连接用延迟最低的</td>
+</tr>
+</tbody>
+</table>
+<p>不管哪种，某个服务器连不上时，这条连接会自动换下一个试，所以轮询也带故障切换。UDP 也走这个组，用按顺序第一个能转发 UDP 的服务器。</p>
+<p>测速只在这个组被用到时在后台进行，最多每 <code>probe_interval</code> 秒一次（默认 180，最少 10），每次给每个服务器 5 秒。探测地址默认 <code>https://www.gstatic.com/generate_204</code>，可以用 <code>probe_url</code> 换成别的（比如要验证解锁，就写流媒体站的地址）。其他策略也可以写 <code>probe_url</code>：这时测不通的服务器会排到最后，能连上但已失效的出口不会再被优先用。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"socks"</span><span class="p">,</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"least_ping"</span><span class="p">,</span><span class="w"> </span><span class="nt">"probe_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.gstatic.com/generate_204"</span><span class="p">,</span><span class="w"> </span><span class="nt">"probe_interval"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">   </span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">40001</span><span class="p">}]}}</span>
+</code></pre></div>
+<p>哪一项写错了（比如漏了端口），日志会提示 <code>left out of the group</code>，这一项不用，其他照常；全部都写错时，这个出站建不起来，指向它的规则改为<strong>屏蔽</strong>（流量不会从节点自己的 IP 直连出去），日志里有警告，修好后恢复。<code>strategy</code>、<code>probe_url</code>、<code>probe_interval</code> 是 kaze 自己认的字段，Xray 会忽略它们。WireGuard 出站不支持多个服务器。</p>
+<h4 id="outbound-chain">出站套出站（链式）<a class="headerlink" href="#outbound-chain" title="Permanent link">&para;</a></h4>
+<p>一个出站可以先经过另一个出站再连自己的服务器，比如落地机经 WARP 出去、或先到中转再到落地。写法和 Xray 一样，<code>proxySettings.tag</code> 或 <code>streamSettings.sockopt.dialerProxy</code> 写前一跳的 <code>tag</code>（sing-box 写法是 <code>detour</code>）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">[{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"socks"</span><span class="p">,</span><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span><span class="p">}]}},</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w"> </span><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"landing"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadowsocks"</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机IP"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8388</span><span class="p">,</span><span class="w"> </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机的密钥"</span><span class="p">}]},</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">"proxySettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">}}]</span>
+</code></pre></div>
+<p>规则指向 <code>landing</code> 时，连接走 节点 → WARP → 落地机 → 目标。可以串好几层，也可以指向一个多服务器的出站组。</p>
+<ul>
+<li>前一跳是 <code>freedom</code> 出站：等于直连，不经过任何代理。</li>
+<li>前一跳不存在、是 <code>blackhole</code>、建不起来，或者几个出站互相指成一个圈：指向这条链的规则改为<strong>屏蔽</strong>，日志里写明原因。</li>
+<li>链只转发 TCP。UDP 经过链时：VLESS、Trojan、VMess 的 UDP 本来就在 TCP 流里，照常可用；Shadowsocks 要开 <code>udp_over_tcp</code> 才能经链转发 UDP；SOCKS 出站经链时不转发 UDP；WireGuard 出站本身走 UDP，不能接在别的出站后面。</li>
+</ul>
+<h3 id="xboard-custom-routes">自定义 Routes<a class="headerlink" href="#xboard-custom-routes" title="Permanent link">&para;</a></h3>
+<p>同一页的「自定义 Routes」，填一个 JSON 数组，每一项是一条规则，格式与 Xray 的路由规则相同，sing-box 的写法也能识别：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">[</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="p">{</span><span class="nt">"domain"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"geosite:netflix"</span><span class="p">,</span><span class="w"> </span><span class="s2">"domain:disneyplus.com"</span><span class="p">],</span><span class="w"> </span><span class="nt">"outboundTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">},</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="p">{</span><span class="nt">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"udp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"443"</span><span class="p">,</span><span class="w"> </span><span class="nt">"outboundTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"block"</span><span class="p">}</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">]</span>
+</code></pre></div>
+<p>匹配条件：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain</code></td>
+<td>域名，写法同上文 <a href="#match">匹配规则写法</a>;<strong>不带前缀的是包含匹配</strong>（Xray 的规矩）</td>
+<td><code>["domain:google.com", "geosite:openai"]</code></td>
+</tr>
+<tr>
+<td><code>domain_suffix</code></td>
+<td>域名及子域名（sing-box 写法）</td>
+<td><code>["google.com"]</code></td>
+</tr>
+<tr>
+<td><code>domain_keyword</code></td>
+<td>包含这段文字</td>
+<td><code>["netflix"]</code></td>
+</tr>
+<tr>
+<td><code>domain_regex</code></td>
+<td>正则</td>
+<td><code>["^ad[0-9]+\\."]</code></td>
+</tr>
+<tr>
+<td><code>ip</code> / <code>ip_cidr</code></td>
+<td>目标 IP 段，可用 <code>geoip:</code></td>
+<td><code>["geoip:cn", "10.0.0.0/8"]</code></td>
+</tr>
+<tr>
+<td><code>port</code> / <code>port_range</code></td>
+<td>目标端口，<code>443</code>、<code>"80,443"</code>、<code>"6881-6889"</code> 都行</td>
+<td><code>"443"</code></td>
+</tr>
+<tr>
+<td><code>network</code></td>
+<td><code>tcp</code>、<code>udp</code> 或 <code>tcp,udp</code></td>
+<td><code>"udp"</code></td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td><code>bittorrent</code>、<code>quic</code>、<code>tls</code>、<code>http</code></td>
+<td><code>["bittorrent"]</code></td>
+</tr>
+</tbody>
+</table>
+<p>去向（三选一）：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outboundTag</code>（或 sing-box 的 <code>outbound</code>）</td>
+<td>自定义 Outbounds 里的 tag；也可以直接写 <code>direct</code>、<code>block</code></td>
+</tr>
+<tr>
+<td><code>"action": "reject"</code></td>
+<td>拒绝（sing-box 写法）</td>
+</tr>
+<tr>
+<td>都不写</td>
+<td>直连</td>
+</tr>
+</tbody>
+</table>
+<p><strong>组合逻辑</strong>：同一个字段里的多个值是「或」，不同字段之间是「且」。上面第二条的意思是「UDP <strong>且</strong> 端口 443」，也就是 QUIC，不会误伤 TCP 443 的 HTTPS。</p>
+<p><code>inboundTag</code>、<code>ruleTag</code>、<code>type: field</code> 这类字段可以照写，单入站的节点上不影响匹配。其余 kaze 不认识的字段会在日志里提示，规则按剩下的条件生效。</p>
+<p>自定义 Routes 排在面板路由管理<strong>之前</strong>，两边冲突时以这里为准。</p>
+<h2 id="v2board-v2node">V2board / v2node<a class="headerlink" href="#v2board-v2node" title="Permanent link">&para;</a></h2>
+<p>「节点管理 → 路由管理」添加路由，在节点编辑里选择要生效的路由。V2board 自带节点和 v2node 两种对接方式的格式相同。</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>匹配值</th>
+<th>动作值</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>禁止访问（域名目标）</td>
+<td>域名</td>
+<td>不填</td>
+<td>拒绝访问这些域名</td>
+</tr>
+<tr>
+<td>禁止访问（IP目标）</td>
+<td>IP / CIDR / <code>geoip:</code></td>
+<td>不填</td>
+<td>拒绝访问这些 IP</td>
+</tr>
+<tr>
+<td>禁止访问（端口目标）</td>
+<td>端口，如 <code>25</code>、<code>6881-6889</code></td>
+<td>不填</td>
+<td>拒绝访问这些端口</td>
+</tr>
+<tr>
+<td>禁止访问（协议）</td>
+<td><code>bittorrent</code> 等</td>
+<td>不填</td>
+<td>拒绝这类协议</td>
+</tr>
+<tr>
+<td>指定DNS服务器进行解析</td>
+<td>域名</td>
+<td>DNS 服务器，写法同 <a href="#xboard-routes">Xboard</a></td>
+<td>用它解析，然后直连</td>
+</tr>
+<tr>
+<td>指定出站服务器（域名目标）</td>
+<td>域名</td>
+<td>出站 JSON</td>
+<td>命中的域名走这个出站</td>
+</tr>
+<tr>
+<td>指定出站服务器（IP目标）</td>
+<td>IP / CIDR</td>
+<td>出站 JSON</td>
+<td>命中的 IP 走这个出站</td>
+</tr>
+<tr>
+<td>自定义默认出站</td>
+<td>不填</td>
+<td>出站 JSON</td>
+<td>没有任何规则命中的流量都走它</td>
+</tr>
+</tbody>
+</table>
+<p>「出站 JSON」就是 <strong>一个</strong> Xray 出站对象，格式和 Xboard 的 <a href="#xboard-outbounds">自定义 Outbounds</a> 里的单项完全一样，<code>tag</code> 可以省略。例如把 ChatGPT 转给 WARP:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>动作:  指定出站服务器(域名目标)
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>匹配值: geosite:openai
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>动作值: {"protocol": "wireguard", "settings": {"secretKey": "YO2b...你的私钥..."}}
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>「自定义默认出站」只能指向真正的代理或 WireGuard；填 <code>blackhole</code> 会切断全部流量，kaze 不会执行，并在日志里提示。</p>
+</div>
+<h2 id="ppanel">PPanel<a class="headerlink" href="#ppanel" title="Permanent link">&para;</a></h2>
+<p>「服务器」页右上角「全局节点默认配置」里设置，所有服务器共用；某台服务器要单独设置时，点它的「节点配置」，关掉对应的「使用全局…」开关再填。</p>
+<h3 id="dns-配置">DNS 配置<a class="headerlink" href="#dns-配置" title="Permanent link">&para;</a></h3>
+<p>每一项填类型、地址和域名：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>例子</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型</td>
+<td><code>UDP</code> / <code>TCP</code> / <code>TLS</code> / <code>HTTPS</code></td>
+<td>DNS over QUIC 不支持，这一项会被跳过并在日志提示</td>
+</tr>
+<tr>
+<td>地址</td>
+<td><code>8.8.8.8:53</code>、<code>1.1.1.1</code>、<code>dns.google/dns-query</code></td>
+<td>HTTPS 类型只写主机时自动补 <code>/dns-query</code></td>
+</tr>
+<tr>
+<td>TLS 服务器名称</td>
+<td><code>cloudflare-dns.com</code></td>
+<td>可选。TLS / HTTPS 类型的地址填 IP 时，用这个名称验证证书</td>
+</tr>
+<tr>
+<td>域名</td>
+<td><code>geosite:netflix</code>、<code>suffix:openai.com</code></td>
+<td>这些域名用该 DNS 解析，然后直连</td>
+</tr>
+</tbody>
+</table>
+<h3 id="屏蔽规则">屏蔽规则<a class="headerlink" href="#屏蔽规则" title="Permanent link">&para;</a></h3>
+<p>每行一条，命中的连接直接拒绝：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>geosite:category-ads-all
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>suffix:doubleclick.net
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>keyword:tracker
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>port:25
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>10.0.0.0/8
+</code></pre></div>
+<h3 id="出站规则">出站规则<a class="headerlink" href="#出站规则" title="Permanent link">&para;</a></h3>
+<p>每个出站填名称、协议、地址、端口和认证，「规则」里每行一条，命中的流量走这个出站。</p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>kaze 是否支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCKS、HTTP、Shadowsocks、VLESS、Trojan</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span> TCP，TLS 可选</td>
+</tr>
+<tr>
+<td>Direct</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span> 规则命中的直连</td>
+</tr>
+<tr>
+<td>Reject</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span> 规则命中的拒绝</td>
+</tr>
+<tr>
+<td>VMess</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></td>
+</tr>
+<tr>
+<td>Hysteria2、TUIC、AnyTLS</td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span> 该出站建不起来，它的规则改为屏蔽（不直连），日志提示</td>
+</tr>
+</tbody>
+</table>
+<p>出站的传输（WebSocket / gRPC 等）和 TLS 会按面板的选择生效。REALITY 出站需要落地机的公钥，面板不下发时该出站不会被启用（它的规则改为屏蔽），请改写在节点的<a href="../../features/routing/">路由文件</a>里（<code>public_key=</code>、<code>short_id=</code>、<code>sni=</code>）。</p>
+<p>PPanel 的规则写法：不带前缀是<strong>完整域名</strong>，<code>suffix:</code> 是域名及子域名，<code>keyword:</code> 是包含，<code>regex:</code> 是正则；上文 <a href="#match">匹配规则写法</a> 里的 <code>domain:</code>、<code>geosite:</code>、<code>port:</code> 等也都能用。</p>
+<h2 id="常用配方">常用配方<a class="headerlink" href="#常用配方" title="Permanent link">&para;</a></h2>
+<h3 id="流媒体和-ai-走-warp">流媒体和 AI 走 WARP<a class="headerlink" href="#流媒体和-ai-走-warp" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Xboard</label><label for="__tabbed_2_2">V2board / v2node</label><label for="__tabbed_2_3">PPanel</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>自定义 Outbounds:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">[{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wireguard"</span><span class="p">,</span><span class="w"> </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"secretKey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YO2b...你的私钥..."</span><span class="p">}}]</span>
+</code></pre></div>
+<p>自定义 Routes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">[{</span><span class="nt">"domain"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"geosite:netflix"</span><span class="p">,</span><span class="w"> </span><span class="s2">"geosite:disney"</span><span class="p">,</span><span class="w"> </span><span class="s2">"geosite:openai"</span><span class="p">],</span><span class="w"> </span><span class="nt">"outboundTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"warp"</span><span class="p">}]</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>动作:  指定出站服务器(域名目标)
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>匹配值: geosite:netflix
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>       geosite:disney
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>       geosite:openai
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>动作值: {"protocol": "wireguard", "settings": {"secretKey": "YO2b...你的私钥..."}}
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>PPanel 的出站不支持 WireGuard。在节点上用 <a href="../../features/routing/#warp">本机路由文件</a> 配置 WARP。</p>
+</div>
+</div>
+</div>
+<h3 id="屏蔽-quic让客户端改走-tcp">屏蔽 QUIC，让客户端改走 TCP<a class="headerlink" href="#屏蔽-quic让客户端改走-tcp" title="Permanent link">&para;</a></h3>
+<p>部分审计和测速依赖 TCP，屏蔽 UDP 443 后浏览器和 App 会自动改用 TCP。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Xboard</label><label for="__tabbed_3_2">V2board / v2node</label><label for="__tabbed_3_3">PPanel</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>自定义 Routes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">[{</span><span class="nt">"network"</span><span class="p">:</span><span class="w"> </span><span class="s2">"udp"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"443"</span><span class="p">,</span><span class="w"> </span><span class="nt">"outboundTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"block"</span><span class="p">}]</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>动作:  禁止访问(协议)
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>匹配值: quic
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>屏蔽规则：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>protocol:quic
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="中转机转发到落地机">中转机转发到落地机<a class="headerlink" href="#中转机转发到落地机" title="Permanent link">&para;</a></h3>
+<p>入口（中转）机对用户提供服务，把全部流量交给落地机，用户看到的出口 IP 是落地机的。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Xboard</label><label for="__tabbed_4_2">V2board / v2node</label><label for="__tabbed_4_3">PPanel</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>自定义 Outbounds:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">[{</span><span class="nt">"tag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"landing"</span><span class="p">,</span><span class="w"> </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shadowsocks"</span><span class="p">,</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机IP"</span><span class="p">,</span><span class="w"> </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8388</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-blake3-aes-128-gcm"</span><span class="p">,</span><span class="w"> </span><span class="nt">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"落地机的密钥"</span><span class="p">}]}}]</span>
+</code></pre></div>
+<p>自定义 Routes（<code>port</code> 覆盖全部端口，等于「全部流量」）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">[{</span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1-65535"</span><span class="p">,</span><span class="w"> </span><span class="nt">"outboundTag"</span><span class="p">:</span><span class="w"> </span><span class="s2">"landing"</span><span class="p">}]</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>动作:  自定义默认出站
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>动作值: {"protocol": "shadowsocks", "settings": {"servers": [{"address": "落地机IP", "port": 8388, "method": "2022-blake3-aes-128-gcm", "password": "落地机的密钥"}]}}
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>出站规则添加一项：协议 Shadowsocks，地址、端口、加密方式、密码填落地机的；规则写 <code>port:1-65535</code>。</p>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>UDP 也会一起转发给落地机，游戏、语音照常可用。落地机是 Shadowsocks 时，需在落地机上开启 UDP（大多数面板和后端默认开启）。</p>
+</div>
+<h3 id="屏蔽广告和-bt">屏蔽广告和 BT<a class="headerlink" href="#屏蔽广告和-bt" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Xboard</label><label for="__tabbed_5_2">V2board / v2node</label><label for="__tabbed_5_3">PPanel</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>路由管理添加：动作「禁止访问」，匹配规则：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>geosite:category-ads-all
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>protocol:bittorrent
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>添加两条：「禁止访问（域名目标）」匹配 <code>geosite:category-ads-all</code>;「禁止访问（协议）」匹配 <code>bittorrent</code>。</p>
+</div>
+<div class="tabbed-block">
+<p>屏蔽规则：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>geosite:category-ads-all
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>protocol:bittorrent
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>只想全局禁 BT 时，也可以直接在节点配置里写 <code>forbidden_bit_torrent=true</code>，见 <a href="../../features/audit/">审计与屏蔽</a>。</p>
+<h2 id="规则没生效怎么查">规则没生效怎么查<a class="headerlink" href="#规则没生效怎么查" title="Permanent link">&para;</a></h2>
+<p>kaze 每次从面板拉到配置都会检查路由，写错或不支持的地方会在日志里逐条说明，不会悄悄忽略：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kaze<span class="w"> </span>log<span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-iE<span class="w"> </span><span class="s2">"custom|panel#|outbound"</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>日志里出现</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outbound "warp" is not defined or not supported</code></td>
+<td>规则引用的 tag 在这个节点的自定义 Outbounds 里没有，或那个出站没建成</td>
+</tr>
+<tr>
+<td><code>transport "kcp" is not supported for outbounds; use tcp, ws, httpupgrade, grpc, h2 or xhttp</code></td>
+<td>出站用了不支持的传输</td>
+</tr>
+<tr>
+<td><code>shadowsocks through plugin … carries TCP only, so UDP routed to this outbound is dropped</code></td>
+<td>Shadowsocks 出站带了插件，UDP 被丢弃；落地机支持时加 <code>udp_over_tcp</code></td>
+</tr>
+<tr>
+<td><code>needs geosite_file to be set</code></td>
+<td>用了 <code>geosite:</code> 但还没执行 <code>kaze geo</code></td>
+</tr>
+<tr>
+<td><code>condition(s) xxx are not supported</code></td>
+<td>自定义 Routes 里有 kaze 不认识的字段，已按其余条件生效</td>
+</tr>
+<tr>
+<td><code>the outbound in the rule's value is not valid JSON</code></td>
+<td>V2board 动作值的 JSON 写错了，检查引号和逗号</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../protocols/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 协议与传输">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                协议与传输
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../features/limits/" class="md-footer__link md-footer__link--next" aria-label="下一页: 用户限制与风控">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                用户限制与风控
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      文档对应 kaze v0.5.9 · Copyright &copy; 2026 kaze · <a href="https://t.me/kaze_core">频道 @kaze_core</a> · <a href="https://t.me/kaze_auth_bot">购买 @kaze_auth_bot</a> · <a href="https://github.com/kazeproxy/kaze-release/releases">下载与发布记录</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_core" target="_blank" rel="noopener" title="频道 @kaze_core" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M256 8a248 248 0 1 0 0 496 248 248 0 1 0 0-496m115 168.7c-3.7 39.2-19.9 134.4-28.1 178.3-3.5 18.6-10.3 24.8-16.9 25.4-14.4 1.3-25.3-9.5-39.3-18.7-21.8-14.3-34.2-23.2-55.3-37.2-24.5-16.1-8.6-25 5.3-39.5 3.7-3.8 67.1-61.5 68.3-66.7.2-.7.3-3.1-1.2-4.4s-3.6-.8-5.1-.5c-2.2.5-37.1 23.5-104.6 69.1-9.9 6.8-18.9 10.1-26.9 9.9-8.9-.2-25.9-5-38.6-9.1-15.5-5-27.9-7.7-26.8-16.3.6-4.5 6.7-9 18.4-13.7 72.3-31.5 120.5-52.3 144.6-62.3 68.9-28.6 83.2-33.6 92.5-33.8 2.1 0 6.6.5 9.6 2.9 2 1.7 3.2 4.1 3.5 6.7.5 3.2.6 6.5.4 9.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://t.me/kaze_auth_bot" target="_blank" rel="noopener" title="购买授权 @kaze_auth_bot" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M24-16C10.7-16 0-5.3 0 8s10.7 24 24 24h45.3c3.9 0 7.2 2.8 7.9 6.6l52.1 286.3c6.2 34.2 36 59.1 70.8 59.1H456c13.3 0 24-10.7 24-24s-10.7-24-24-24H200.1c-11.6 0-21.5-8.3-23.6-19.7l-5.1-28.3H475c30.8 0 57.2-21.9 62.9-52.2l31-165.9c3.7-19.7-11.4-37.9-31.5-37.9H124.7l-.4-2c-4.8-26.6-28-46-55.1-46zm184 528a48 48 0 1 0 0-96 48 48 0 1 0 0 96m224 0a48 48 0 1 0 0-96 48 48 0 1 0 0 96"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://github.com/kazeproxy/kaze-release" target="_blank" rel="noopener" title="下载" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
